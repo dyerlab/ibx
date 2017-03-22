@@ -47,3 +47,8 @@ HEADERS  += mainwindow.h \
     multiplelineedit.h
 
 FORMS    += mainwindow.ui
+
+DISTFILES += \
+    media/characteristic_model.png \
+    LICENSE \
+    README.md
