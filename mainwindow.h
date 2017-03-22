@@ -32,10 +32,15 @@
 #include "datatablemodel.h"
 #include "celleditordelegate.h"
 
+#include <QLabel>
 #include <QAction>
+#include <QTreeView>
+#include <QSplitter>
 #include <QTableView>
 #include <QMainWindow>
-#include <QSplitter>
+#include <QTextBrowser>
+#include <QGraphicsView>
+#include <QStackedWidget>
 #include <QWebEngineView>
 
 namespace Ui {
@@ -61,9 +66,15 @@ private:
     QAction *actionQuit;
     QAction *actionShowResults;
 
-    QTableView *genotypeTable;
-    QHeaderView *genotypeHeader;
+    QTreeView *dataTree;
 
+    QStackedWidget *stackedWidget;
+
+    QLabel *homeLabel;
+    QLabel *viewLabel;
+
+    QTableView *tableView;
+    QHeaderView *genotypeHeader;
     QMenu *genotypeHeaderMenu;
     QAction *actionSetStratum;
     QAction *actionSetCoordinates;
@@ -71,7 +82,18 @@ private:
     DataTableModel *dataTableModel;
     CellEditorDelegate *cellEditorDelegate;
 
-    QWebEngineView *resultsView;
+
+
+    QWebEngineView *webView;
+
+
+    QTextBrowser *textBrowser;
+
+
+    QGraphicsView *graphicsView;
+
+
+
     QSplitter *mainSplitter;
 
     DataSet *theData;

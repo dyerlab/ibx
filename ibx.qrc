@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>media/blank_page.html</file>
+        <file>media/brown_bkgrnd.png</file>
+        <file>media/characteristic_model.png</file>
+        <file>media/GSLogo.png</file>
+        <file>media/map_base.html</file>
+        <file>media/ResultsStyleSheet.css</file>
+        <file>AppStyleSheet.css</file>
+    </qresource>
+</RCC>

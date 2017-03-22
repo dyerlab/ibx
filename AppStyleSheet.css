@@ -1,0 +1,30 @@
+QSplitter {
+    width: 1px;
+    background-color: black;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+}
+
+QTreeView#dataTree {
+    border:0px;
+    background-color: #DADFE5;
+    selection-color: black;
+    selection-background-color: #C7CBD0;
+    color: #3E4961;
+    /* padding-left: 8px; */
+ }
+
+QStackedWidget {
+    background-color: white;
+}
+
+QLabel#titleLabel {
+    padding-left: 3px;
+    color: white;
+    background-image: url(:/media/brown_bkgrnd.png);
+    background-repeat:repeat-x;
+}
+
+
+

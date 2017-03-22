@@ -51,4 +51,15 @@ FORMS    += mainwindow.ui
 DISTFILES += \
     media/characteristic_model.png \
     LICENSE \
-    README.md
+    README.md \
+    AppStyleSheet.css
+
+RESOURCES += \
+    ibx.qrc
+
+OTHER_FILES += \
+    media/map_base.html \
+    media/blank_page.html \
+    media/GSLogo.png \
+    AppStyleSheet.css \
+    media/ResultsStyleSheet.css

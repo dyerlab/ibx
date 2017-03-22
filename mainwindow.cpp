@@ -32,7 +32,9 @@
 
 #include <QMenu>
 #include <QDebug>
+#include <QLabel>
 #include <QSettings>
+#include <QVBoxLayout>
 #include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -57,10 +59,23 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 }
 
 void MainWindow::loadSettings(){
+
     QSettings settings("DyerLab","ibx");
     move( settings.value("pos",QVariant(QPoint(100,100))).toPoint() );
     resize( settings.value( "size", QVariant(QSize(400,500))).toSize() );
     mainSplitter->restoreState( settings.value( "splitter", QVariant(QByteArray())).toByteArray());
+
+    QFile in(":/AppStyleSheet.css");
+    if( in.open(QIODevice::Text|QIODevice::ReadOnly)) {
+        QTextStream stream(&in);
+        QString sheet = stream.readAll();
+        if( !sheet.isEmpty() )
+            this->setStyleSheet( sheet );
+        in.close();
+    } else {
+        qDebug() << "Could not load style sheet.";
+    }
+
 }
 
 void MainWindow::saveSettings(){
@@ -121,24 +136,83 @@ void MainWindow::makeMenus() {
 }
 
 void MainWindow::makeUI() {
-    genotypeTable = new QTableView();    
-    genotypeHeader = genotypeTable->horizontalHeader();
+    mainSplitter = new QSplitter();
+    mainSplitter->setOrientation( Qt::Horizontal );
+
+    // Data List (left side)
+    QWidget *dataWidget = new QWidget();
+    dataWidget->setObjectName("bordered");
+    QVBoxLayout *dataLayout = new QVBoxLayout( dataWidget );
+    dataLayout->setObjectName("slimLayout");
+    dataLayout->setSpacing(0);
+    dataLayout->setMargin(0);
+    QLabel *dataLabel = new QLabel(tr("DATA"));
+    dataLabel->setFixedHeight( 25 );
+    dataLabel->setObjectName("titleLabel");
+
+    // make the data tree
+    dataTree = new QTreeView();
+    dataTree->setAttribute(Qt::WA_MacShowFocusRect, false);
+    dataTree->setHeaderHidden(true);
+    dataTree->setSelectionMode(QAbstractItemView::SingleSelection);
+    dataTree->setObjectName("dataTree");
+
+    dataLayout->addWidget( dataLabel );
+    dataLayout->addWidget( dataTree );
+
+
+    // Right side
+    QWidget *viewWidget = new QWidget();
+    QVBoxLayout *rightLayout = new QVBoxLayout( viewWidget );
+    rightLayout->setMargin(0);
+    rightLayout->setSpacing(0);
+    viewLabel = new QLabel(tr(""));
+    viewLabel->setFixedHeight(25);
+    viewLabel->setObjectName("titleLabel");
+
+    stackedWidget = new QStackedWidget();
+    stackedWidget->setMinimumWidth(650);
+    stackedWidget->setMinimumHeight(500);
+    rightLayout->addWidget( viewLabel );
+    rightLayout->addWidget( stackedWidget );
+
+    tableView = new QTableView();
+    genotypeHeader = tableView->horizontalHeader();
     genotypeHeader->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(genotypeHeader, SIGNAL(customContextMenuRequested(QPoint)),
     SLOT(customContextMenuRequested(QPoint)));
 
-    cellEditorDelegate = new CellEditorDelegate( genotypeTable );
-    genotypeTable->setItemDelegate( cellEditorDelegate );
+    cellEditorDelegate = new CellEditorDelegate( tableView );
+    tableView->setItemDelegate( cellEditorDelegate );
 
-    resultsView = new QWebEngineView();
 
-    mainSplitter = new QSplitter(this);
-    mainSplitter->setOrientation(Qt::Vertical);
+    webView = new QWebEngineView();
 
-    mainSplitter->addWidget(genotypeTable);
-    mainSplitter->addWidget(resultsView);
+    homeLabel = new QLabel();
+    homeLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    homeLabel->setScaledContents(false);
+    homeLabel->setAlignment(Qt::AlignCenter|Qt::AlignHCenter);
+
+    textBrowser = new QTextBrowser();
+    textBrowser->setAcceptRichText(true);
+    textBrowser->setContentsMargins(5,5,5,5);
+    textBrowser->setReadOnly(true);
+
+    graphicsView = new QGraphicsView();
+
+    stackedWidget->addWidget( homeLabel );
+    stackedWidget->addWidget( textBrowser );
+    stackedWidget->addWidget( webView );
+    stackedWidget->addWidget( tableView );
+    stackedWidget->addWidget( graphicsView );
+    stackedWidget->setCurrentIndex(0);
+
+    mainSplitter->addWidget( dataWidget );
+    mainSplitter->addWidget( viewWidget );
+
 
     setCentralWidget( mainSplitter );
+    mainSplitter->setFocus();
 }
 
 
@@ -161,7 +235,7 @@ void MainWindow::slotImport(){
         dataTableModel = new DataTableModel();
         dataTableModel->setDataSet(theData);
 
-        genotypeTable->setModel( dataTableModel );
+        tableView->setModel( dataTableModel );
 
         slotShowResults();
     }
@@ -170,7 +244,7 @@ void MainWindow::slotImport(){
 
 
 void MainWindow::customContextMenuRequested(const QPoint &pos){
-    QItemSelectionModel *select = genotypeTable->selectionModel();
+    QItemSelectionModel *select = tableView->selectionModel();
     QModelIndexList cols = select->selectedColumns( );
     if( cols.count( ) ) {
         //int column = genotypeHeader->logicalIndexAt(pos);
@@ -183,7 +257,7 @@ void MainWindow::customContextMenuRequested(const QPoint &pos){
 }
 
 void MainWindow::setColumnToType( DATA_TYPE type ) {
-    QItemSelectionModel *select = genotypeTable->selectionModel();
+    QItemSelectionModel *select = tableView->selectionModel();
     QModelIndexList cols = select->selectedColumns();
 
     foreach( QModelIndex idx, cols ){
@@ -191,7 +265,7 @@ void MainWindow::setColumnToType( DATA_TYPE type ) {
         theData->setColumnToType(i, type);
     }
 
-    genotypeTable->clearSelection();
+    tableView->clearSelection();
 
 }
 
@@ -209,8 +283,8 @@ void MainWindow::slotSetColumnToTypeLocus() {
 
 void MainWindow::slotShowResults() {
     QString res = theData->getResults()->getResults();
-    resultsView->setHtml(res);
-    resultsView->update();
+    webView->setHtml(res);
+    webView->update();
 }
 
 void MainWindow::slotOpen(){
@@ -228,7 +302,7 @@ void MainWindow::slotOpen(){
     theData = loadDataSet(fileName);
     dataTableModel->setDataSet(theData);
 
-    genotypeTable->setModel( dataTableModel );
+    tableView->setModel( dataTableModel );
     slotShowResults();
     */
 }
