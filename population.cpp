@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  factories
+*  population.cpp
 *
 *  Created: 3 2017 by rodney
 *
@@ -25,8 +25,21 @@
 *
 ******************************************************************************/
 
-#include "factories.h"
+#include "population.h"
 
+Population::Population(QObject *parent) : QObject(parent)
+{
 
-#include <QDebug>
+}
 
+void Population::addIndividual( Individual *theInd ){
+    this->theInds.append(theInd);
+}
+
+Individual* Population::getIndividual(const int index) const{
+    return theInds.value(index);
+}
+
+int Population::count() const {
+    return this->theInds.count();
+}

@@ -25,10 +25,16 @@
 *
 ******************************************************************************/
 
-#include "factories.h"
+
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+
+#include "importgenotypesdialog.h"
+
 #include "fileio.h"
+#include "globalz.h"
+#include "factories.h"
+#include "ui_mainwindow.h"
+
 
 #include <QMenu>
 #include <QDebug>
@@ -103,18 +109,6 @@ void MainWindow::makeActions() {
     actionQuit->setShortcut(tr("CTRL+Q"));
     connect( actionQuit, SIGNAL(triggered(bool)), qApp, SLOT(closeAllWindows()));
 
-    actionShowResults = new QAction(tr("&Results"),this);
-    actionShowResults->setShortcut(tr("CTRL+R"));
-    connect(actionShowResults, SIGNAL(triggered(bool)),
-            this, SLOT(slotShowResults()));
-
-    // Contextual menu for headers
-    actionSetStratum = new QAction(tr("Set Stratum"),this);
-    connect( actionSetStratum, SIGNAL(triggered(bool)), this, SLOT(slotSetColumnToTypeStratum()));
-    actionSetCoordinates = new QAction(tr("Set Coordinates"), this);
-    connect( actionSetCoordinates, SIGNAL(triggered(bool)), this, SLOT(slotSetColumnToTypeCoordinate()));
-    actionSetLocus = new QAction( tr("Set Locus"), this);
-    connect( actionSetLocus, SIGNAL(triggered(bool)), this, SLOT(slotSetColumnToTypeLocus()));
 
 }
 
@@ -127,10 +121,6 @@ void MainWindow::makeMenus() {
     fileMenu->addAction( actionImport );
     fileMenu->addSeparator();
     fileMenu->addAction(actionQuit);
-
-
-    QMenu *windowMenu = this->menuBar()->addMenu(tr("&Window"));
-    windowMenu->addAction( actionShowResults );
 
 
 }
@@ -146,7 +136,7 @@ void MainWindow::makeUI() {
     dataLayout->setObjectName("slimLayout");
     dataLayout->setSpacing(0);
     dataLayout->setMargin(0);
-    QLabel *dataLabel = new QLabel(tr("DATA"));
+    QLabel *dataLabel = new QLabel(tr("d a t a"));
     dataLabel->setFixedHeight( 25 );
     dataLabel->setObjectName("titleLabel");
 
@@ -156,10 +146,11 @@ void MainWindow::makeUI() {
     dataTree->setHeaderHidden(true);
     dataTree->setSelectionMode(QAbstractItemView::SingleSelection);
     dataTree->setObjectName("dataTree");
+    dataTreeModel = new TreeModel();
+    dataTree->setModel( dataTreeModel );
 
     dataLayout->addWidget( dataLabel );
     dataLayout->addWidget( dataTree );
-
 
     // Right side
     QWidget *viewWidget = new QWidget();
@@ -177,14 +168,6 @@ void MainWindow::makeUI() {
     rightLayout->addWidget( stackedWidget );
 
     tableView = new QTableView();
-    genotypeHeader = tableView->horizontalHeader();
-    genotypeHeader->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(genotypeHeader, SIGNAL(customContextMenuRequested(QPoint)),
-    SLOT(customContextMenuRequested(QPoint)));
-
-    cellEditorDelegate = new CellEditorDelegate( tableView );
-    tableView->setItemDelegate( cellEditorDelegate );
-
 
     webView = new QWebEngineView();
 
@@ -205,7 +188,7 @@ void MainWindow::makeUI() {
     stackedWidget->addWidget( webView );
     stackedWidget->addWidget( tableView );
     stackedWidget->addWidget( graphicsView );
-    stackedWidget->setCurrentIndex(0);
+    stackedWidget->setCurrentIndex( MAIN_WIDGET_HOME );
 
     mainSplitter->addWidget( dataWidget );
     mainSplitter->addWidget( viewWidget );
@@ -217,75 +200,55 @@ void MainWindow::makeUI() {
 
 
 void MainWindow::slotImport(){
+
     QString fileName = QFileDialog::getOpenFileName(this, ("Open CSV File"),
                                                     QDir::homePath(),
                                                     ("CSV File (*.csv)"));
     if( fileName.isNull())
         return;
 
+    QList<QStringList> raw = importCSV(fileName);
+    if( !raw.count() )
+        return;
+
+    ImportGenotypesDialog *dlg = new ImportGenotypesDialog(raw, this);
+
+
+    if( dlg->exec() == QDialog::Accepted )
+        qDebug() << "YES";
+    else
+        qDebug() << "NO";
+
+    delete( dlg );
+    /*
+
+
     QList<QStringList> data = importCSV(fileName);
 
     if( data.count() > 0 && data.at(0).count() > 0){
-        theData = new DataSet( makeIndividualsFromCSV( data ) );
+
+        theData = new DataSet();
+
+
         theData->orderHeaders( data.at(0) );
 
         theData->getResults()->addHeader("Input Data File");
         theData->getResults()->addUnorderedList( getFileInfo(fileName) );
 
-        dataTableModel = new DataTableModel();
+        dataTableModel = new GenotypeTableModel();
         dataTableModel->setDataSet(theData);
-
         tableView->setModel( dataTableModel );
 
-        slotShowResults();
+
     }
 
-}
-
-
-void MainWindow::customContextMenuRequested(const QPoint &pos){
-    QItemSelectionModel *select = tableView->selectionModel();
-    QModelIndexList cols = select->selectedColumns( );
-    if( cols.count( ) ) {
-        //int column = genotypeHeader->logicalIndexAt(pos);
-        QMenu *menu = new QMenu(this);
-        menu->addAction(actionSetStratum);
-        menu->addAction(actionSetCoordinates);
-        menu->addAction(actionSetLocus);
-        menu->popup( genotypeHeader->viewport()->mapToGlobal(pos));
-    }
-}
-
-void MainWindow::setColumnToType( DATA_TYPE type ) {
-    QItemSelectionModel *select = tableView->selectionModel();
-    QModelIndexList cols = select->selectedColumns();
-
-    foreach( QModelIndex idx, cols ){
-        int i = idx.column();
-        theData->setColumnToType(i, type);
-    }
-
-    tableView->clearSelection();
+    */
 
 }
 
-void MainWindow::slotSetColumnToTypeStratum() {
-    this->setColumnToType( DATA_TYPE_STRATUM );
-}
 
-void MainWindow::slotSetColumnToTypeCoordinate() {
-    this->setColumnToType( DATA_TYPE_COORDINATE );
-}
 
-void MainWindow::slotSetColumnToTypeLocus() {
-    this->setColumnToType( DATA_TYPE_LOCUS );
-}
 
-void MainWindow::slotShowResults() {
-    QString res = theData->getResults()->getResults();
-    webView->setHtml(res);
-    webView->update();
-}
 
 void MainWindow::slotOpen(){
     QString fileName = QFileDialog::getOpenFileName(this,
@@ -303,7 +266,7 @@ void MainWindow::slotOpen(){
     dataTableModel->setDataSet(theData);
 
     tableView->setModel( dataTableModel );
-    slotShowResults();
+
     */
 }
 

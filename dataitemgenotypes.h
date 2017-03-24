@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  factories
+*  dataitemgenotypes.h
 *
 *  Created: 3 2017 by rodney
 *
@@ -25,8 +25,16 @@
 *
 ******************************************************************************/
 
-#include "factories.h"
+#ifndef DATAITEMGENOTYPES_H
+#define DATAITEMGENOTYPES_H
 
+#include "treeitem.h"
 
-#include <QDebug>
+class DataItemGenotypes : public TreeItem
+{
+public:
+    DataItemGenotypes(const QList<QVariant> &data, TreeItem *parent = 0);
 
+};
+
+#endif // DATAITEMGENOTYPES_H

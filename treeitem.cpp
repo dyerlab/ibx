@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  factories
+*  dataitembase.cpp
 *
 *  Created: 3 2017 by rodney
 *
@@ -25,8 +25,46 @@
 *
 ******************************************************************************/
 
-#include "factories.h"
+#include "globalz.h"
+#include "treeitem.h"
+
+TreeItem::TreeItem(const QList<QVariant> &data, TreeItem *parent) {
+    this->parent = parent;
+    this->contents = data;
+}
+
+TreeItem::~TreeItem() {
+    qDeleteAll( children );
+}
+
+void TreeItem::appendChild( TreeItem *child ) {
+    children.append( child );
+}
+
+TreeItem* TreeItem::child( int row ) {
+    return children.value(row);
+}
+
+int TreeItem::childCount() const {
+    return children.count();
+}
+
+int TreeItem::columnCount() const {
+    return this->contents.count();
+}
+
+QVariant TreeItem::data(int column) const {
+    return this->contents.value(column);
+}
 
 
-#include <QDebug>
+int TreeItem::row() const {
+    if( parent )
+        return parent->children.indexOf( const_cast<TreeItem*>(this) );
+    return 0;
+}
 
+
+TreeItem* TreeItem::parentItem() {
+    return this->parent;
+}

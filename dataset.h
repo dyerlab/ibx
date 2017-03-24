@@ -28,17 +28,17 @@
 #ifndef DATASET_H
 #define DATASET_H
 
-#include "individual.h"
+#include "population.h"
 #include "resultsdocument.h"
 
 class DataSet {
 
 public:
     DataSet();
-    DataSet(QList<Individual *> theInds);
-    DataSet(const DataSet& other);
     ~DataSet();
 
+
+    /*
     int numberOfIndividuals() const;
     int numberOfDataColumns() const;
     void addIndividual( Individual *theInd );
@@ -59,13 +59,9 @@ public:
 
     bool saveToFile( QString path);
     bool loadFromFile( QString path);
+    */
 
 private:
-    QStringList headers;
-    QList<DATA_TYPE> dataTypes;
-    QList<Individual*> individuals;
-    ResultsDocument *results;
-
 
 };
 

@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  factories
+*  dataitembase.h
 *
 *  Created: 3 2017 by rodney
 *
@@ -25,8 +25,34 @@
 *
 ******************************************************************************/
 
-#include "factories.h"
+#ifndef TREEITEM_H
+#define TREEITEM_H
+
+#include <QList>
+#include <QString>
+#include <QVariant>
+
+class TreeItem {
+
+public:
+    explicit TreeItem(const QList<QVariant> &data, TreeItem *parent = 0);
+    ~TreeItem();
+
+    void appendChild( TreeItem *child );
+
+    TreeItem* child( int row );
+    int childCount() const;
+    int columnCount() const;
+    QVariant data(int column) const;
+    int row() const;
+    TreeItem* parentItem();
+
+private:
+    QList<TreeItem*> children;
+    QList<QVariant> contents;
+    TreeItem *parent;
 
 
-#include <QDebug>
+};
 
+#endif // TREEITEM_H

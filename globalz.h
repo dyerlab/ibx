@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  datatablemodel.h
+*  globalz
 *
 *  Created: 3 2017 by rodney
 *
@@ -25,34 +25,16 @@
 *
 ******************************************************************************/
 
-#ifndef DATATABLEMODEL_H
-#define DATATABLEMODEL_H
+#ifndef GLOBALZ_H
+#define GLOBALZ_H
 
-#include "dataset.h"
+typedef enum {
+    MAIN_WIDGET_HOME,
+    MAIN_WIDGET_DOCUMENT,
+    MAIN_WIDGET_WEB,
+    MAIN_WIDGET_TABLE,
+    MAIN_WIDGET_GRAPHICS
+} MAIN_WIDGET_TOP;
 
-#include <QObject>
-#include <QAbstractTableModel>
 
-class DataTableModel : public QAbstractTableModel
-{
-    Q_OBJECT
-public:
-    explicit DataTableModel(QObject *parent = 0);
-
-    void setDataSet( DataSet *data );
-    int rowCount(const QModelIndex &parent = QModelIndex()) const ;
-    int columnCount(const QModelIndex &parent) const;
-    QVariant data(const QModelIndex &index, int role) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-    bool setData(const QModelIndex &index, const QVariant &value, int role);
-    Qt::ItemFlags flags(const QModelIndex &index) const;
-
-signals:
-
-public slots:
-
-private:
-    DataSet *theData;
-};
-
-#endif // DATATABLEMODEL_H
+#endif // GLOBALZ_H

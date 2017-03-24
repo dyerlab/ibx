@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  factories
+*  datatablemodel.h
 *
 *  Created: 3 2017 by rodney
 *
@@ -25,8 +25,34 @@
 *
 ******************************************************************************/
 
-#include "factories.h"
+#ifndef TABLEMODEL_H
+#define TABLEMODEL_H
 
+#include "population.h"
 
-#include <QDebug>
+#include <QObject>
+#include <QAbstractTableModel>
 
+class GenotypeTableModel : public QAbstractTableModel
+{
+    Q_OBJECT
+public:
+    explicit GenotypeTableModel(QObject *parent = 0);
+
+    int rowCount(const QModelIndex &parent = QModelIndex()) const ;
+    int columnCount(const QModelIndex &parent) const;
+    QVariant data(const QModelIndex &index, int role) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    bool setData(const QModelIndex &index, const QVariant &value, int role);
+    Qt::ItemFlags flags(const QModelIndex &index) const;
+
+private:
+
+    Population *thePopulation;
+
+    QStringList headers;
+    QList<DATA_TYPE> dataTypes;
+
+};
+
+#endif // DATATABLEMODEL_H

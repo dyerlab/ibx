@@ -58,3 +58,19 @@ QStringList getFileInfo( QString path ) {
     return res;
 }
 
+Population* importPopulationFromCSV( QString path) {
+    QList<QStringList> raw = importCSV(path);
+    Population *thePop = new Population();
+    QStringList header = raw.first();
+
+    raw.pop_front();
+    foreach(const QStringList row, raw  ){
+        Individual *theInd = new Individual();
+        for( int i=0;i<header.count(); i++){
+            theInd->setData( header.at(i), row.at(i) );
+        }
+        thePop->addIndividual(theInd);
+    }
+    return thePop;
+}
+

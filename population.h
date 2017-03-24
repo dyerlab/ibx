@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  factories
+*  population.h
 *
 *  Created: 3 2017 by rodney
 *
@@ -25,8 +25,24 @@
 *
 ******************************************************************************/
 
-#include "factories.h"
+#ifndef POPULATION_H
+#define POPULATION_H
 
+#include "individual.h"
+#include <QObject>
 
-#include <QDebug>
+class Population : public QObject
+{
+    Q_OBJECT
+public:
+    explicit Population(QObject *parent = 0);
 
+    void addIndividual(Individual *theInd);
+    Individual* getIndividual( const int index ) const;
+    int count() const;
+
+private:
+    QList<Individual*> theInds;
+};
+
+#endif // POPULATION_H

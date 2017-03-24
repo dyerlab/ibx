@@ -28,9 +28,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+
 #include "dataset.h"
-#include "datatablemodel.h"
-#include "celleditordelegate.h"
+#include "tablemodel.h"
+#include "treemodel.h"
 
 #include <QLabel>
 #include <QAction>
@@ -67,6 +68,7 @@ private:
     QAction *actionShowResults;
 
     QTreeView *dataTree;
+    TreeModel *dataTreeModel;
 
     QStackedWidget *stackedWidget;
 
@@ -74,25 +76,13 @@ private:
     QLabel *viewLabel;
 
     QTableView *tableView;
-    QHeaderView *genotypeHeader;
-    QMenu *genotypeHeaderMenu;
-    QAction *actionSetStratum;
-    QAction *actionSetCoordinates;
-    QAction *actionSetLocus;
-    DataTableModel *dataTableModel;
-    CellEditorDelegate *cellEditorDelegate;
-
-
+    GenotypeTableModel *dataTableModel;
 
     QWebEngineView *webView;
 
-
     QTextBrowser *textBrowser;
 
-
     QGraphicsView *graphicsView;
-
-
 
     QSplitter *mainSplitter;
 
@@ -104,19 +94,11 @@ private:
     void makeMenus();
     void makeUI();
 
-    void setColumnToType( DATA_TYPE type );
-
-public slots:
-    void slotSetColumnToTypeStratum();
-    void slotSetColumnToTypeCoordinate();
-    void slotSetColumnToTypeLocus();
-    void customContextMenuRequested(const QPoint &pos);
 
 
 
 private slots:
     void slotImport();
-    void slotShowResults();
     void slotSave();
     void slotOpen();
 

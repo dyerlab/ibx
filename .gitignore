@@ -29,4 +29,5 @@
 *.app
 
 .DS_STORE
-IBX.pro.user
+IBX.pro.use*
+

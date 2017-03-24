@@ -29,24 +29,32 @@ SOURCES += main.cpp\
     individual.cpp \
     dataset.cpp \
     factories.cpp \
-    datatablemodel.cpp \
     resultsdocument.cpp \
     spatialindividual.cpp \
-    celleditordelegate.cpp \
-    multiplelineedit.cpp
+    multiplelineedit.cpp \
+    treeitem.cpp \
+    tablemodel.cpp \
+    treemodel.cpp \
+    population.cpp \
+    importgenotypesdialog.cpp
 
 HEADERS  += mainwindow.h \
     fileio.h \
     individual.h \
     dataset.h \
     factories.h \
-    datatablemodel.h \
     resultsdocument.h \
     spatialindividual.h \
-    celleditordelegate.h \
-    multiplelineedit.h
+    multiplelineedit.h \
+    globalz.h \
+    treeitem.h \
+    tablemodel.h \
+    treemodel.h \
+    population.h \
+    importgenotypesdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    importgenotypesdialog.ui
 
 DISTFILES += \
     media/characteristic_model.png \

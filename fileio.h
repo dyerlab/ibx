@@ -28,7 +28,7 @@
 #ifndef FILEIO_H
 #define FILEIO_H
 
-#include "dataset.h"
+#include "population.h"
 
 #include <QList>
 #include <QString>
@@ -36,6 +36,8 @@
 #include <QDataStream>
 
 QList<QStringList> importCSV( QString path );
+
+Population* importPopulationFromCSV( QString path);
 
 QStringList getFileInfo( QString path );
 

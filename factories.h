@@ -31,8 +31,9 @@
 #include <QList>
 
 #include "dataset.h"
+#include "population.h"
 #include "individual.h"
 
-QList<Individual*> makeIndividualsFromCSV( QList<QStringList> raw );
+
 
 #endif // FACTORIES_H

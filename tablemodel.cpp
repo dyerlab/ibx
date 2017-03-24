@@ -25,48 +25,47 @@
 *
 ******************************************************************************/
 
-#include "datatablemodel.h"
+#include "tablemodel.h"
 #include "individual.h"
 
 #include <QFont>
 #include <QBrush>
 
-DataTableModel::DataTableModel(QObject *parent) : QAbstractTableModel(parent)
+GenotypeTableModel::GenotypeTableModel(QObject *parent) : QAbstractTableModel(parent)
 {
-    theData = NULL;
+    thePopulation = new Population();
 }
 
-void DataTableModel::setDataSet( DataSet *data ) {
-    theData = data;
+int GenotypeTableModel::rowCount(const QModelIndex & /*parent*/ ) const {
+    return thePopulation->count();
 }
 
-int DataTableModel::rowCount(const QModelIndex & /*parent*/ ) const {
-    return theData->numberOfIndividuals();
+int GenotypeTableModel::columnCount(const QModelIndex &/*parent*/) const {
+    return this->headers.count();
 }
 
-int DataTableModel::columnCount(const QModelIndex &/*parent*/) const {
-    return theData->numberOfDataColumns();
-}
-
-QVariant DataTableModel::data(const QModelIndex &index, int role) const {
+QVariant GenotypeTableModel::data(const QModelIndex &index, int role) const {
 
     if( role == Qt::DisplayRole){
-        return theData->getDataForColumn(index.row(), index.column());
+        return thePopulation->getIndividual(index.row())->getData(this->headers.value(index.column()));
     }
-
     else if( role == Qt::BackgroundRole ){
         QBrush background;
-        int col = index.column();
-        switch( this->theData->getDataTypeForColumn(col)){
+
+        switch( dataTypes.value( index.column())){
+
         case DATA_TYPE_STRATUM:
             background = QBrush(QColor(242, 250, 255));
             break;
+
         case DATA_TYPE_COORDINATE:
             background = QBrush(QColor(250, 255, 247));
             break;
+
         case DATA_TYPE_LOCUS:
             background = QBrush(QColor(255, 250, 244));
             break;
+
         default:
             background = Qt::white;
             break;
@@ -74,17 +73,16 @@ QVariant DataTableModel::data(const QModelIndex &index, int role) const {
 
         return QVariant(background);
     }
-
     return QVariant();
 }
 
 
-QVariant DataTableModel::headerData(int section, Qt::Orientation orientation, int role) const {
+QVariant GenotypeTableModel::headerData(int section, Qt::Orientation orientation, int role) const {
 
     if( role == Qt::DisplayRole ) {
 
         if( orientation == Qt::Horizontal )
-           return QVariant( theData->getHeaderForColumn(section) );
+           return QVariant( headers.value(section) );
         else
            return QVariant(section);
     }
@@ -98,20 +96,18 @@ QVariant DataTableModel::headerData(int section, Qt::Orientation orientation, in
 }
 
 
-bool DataTableModel::setData(const QModelIndex &index, const QVariant &value, int role) {
-    int col = index.column();
-
+bool GenotypeTableModel::setData(const QModelIndex &index, const QVariant &value, int role) {
     if( role == Qt::EditRole ){
-        int row = index.row();    
-        QString key = theData->getHeaderForColumn(col).toString();
-        Individual *theInd = theData->getIndividual(row);
-        theInd->setData(key,value);
+
+        thePopulation->getIndividual(index.row())->setData( headers.value(index.column()),
+                                                            value,
+                                                            dataTypes.value(index.column()));
     }
 
     return true;
 }
 
-Qt::ItemFlags DataTableModel::flags(const QModelIndex &/*index*/) const {
+Qt::ItemFlags GenotypeTableModel::flags(const QModelIndex &/*index*/) const {
     return Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled;
 }
 

@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  factories
+*  dataitemmodel.h
 *
 *  Created: 3 2017 by rodney
 *
@@ -25,8 +25,35 @@
 *
 ******************************************************************************/
 
-#include "factories.h"
+#ifndef DATAITEMMODEL_H
+#define DATAITEMMODEL_H
+
+#include "treeitem.h"
+#include <QList>
+#include <QVariant>
+#include <QAbstractItemModel>
+
+class TreeModel : public QAbstractItemModel
+{
+    Q_OBJECT
+
+public:
+    explicit TreeModel(QObject *parent=0);
+    ~TreeModel();
+
+    QVariant data( const QModelIndex &index, int role) const override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
+    QModelIndex index(int row, int column, const QModelIndex &parent) const override;
+    QModelIndex parent(const QModelIndex &index) const override;
+    int rowCount(const QModelIndex &parent) const override;
+    int columnCount(const QModelIndex &parent) const override;
+
+private:
+
+    TreeItem *rootItem;
 
 
-#include <QDebug>
+};
 
+#endif // DATAITEMMODEL_H
