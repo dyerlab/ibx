@@ -1,7 +1,9 @@
 #include "importgenotypesdialog.h"
 #include "ui_importgenotypesdialog.h"
 
-ImportGenotypesDialog::ImportGenotypesDialog(QWidget *parent) :
+
+
+ImportGenotypesDialog::ImportGenotypesDialog(QList<QStringList> raw, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ImportGenotypesDialog)
 {

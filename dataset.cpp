@@ -43,7 +43,7 @@ DataSet::~DataSet() {
 
 }
 
-/*
+
 DataSet::DataSet(QList<Individual*> theInds) {
     if( theInds.count() ) {
         headers = theInds.at(0)->keys();
@@ -204,7 +204,7 @@ bool DataSet::loadFromFile( QString path) {
 }
 
 
-*/
+
 
 
 

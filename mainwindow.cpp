@@ -31,6 +31,7 @@
 #include "importgenotypesdialog.h"
 
 #include "fileio.h"
+#include "dataset.h"
 #include "globalz.h"
 #include "factories.h"
 #include "ui_mainwindow.h"
@@ -206,7 +207,7 @@ void MainWindow::slotImport(){
                                                     ("CSV File (*.csv)"));
     if( fileName.isNull())
         return;
-
+/*
     QList<QStringList> raw = importCSV(fileName);
     if( !raw.count() )
         return;
@@ -220,7 +221,7 @@ void MainWindow::slotImport(){
         qDebug() << "NO";
 
     delete( dlg );
-    /*
+     */
 
 
     QList<QStringList> data = importCSV(fileName);
@@ -242,7 +243,7 @@ void MainWindow::slotImport(){
 
     }
 
-    */
+
 
 }
 

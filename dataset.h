@@ -38,7 +38,7 @@ public:
     ~DataSet();
 
 
-    /*
+
     int numberOfIndividuals() const;
     int numberOfDataColumns() const;
     void addIndividual( Individual *theInd );
@@ -59,7 +59,7 @@ public:
 
     bool saveToFile( QString path);
     bool loadFromFile( QString path);
-    */
+
 
 private:
 
