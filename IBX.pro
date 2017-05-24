@@ -23,38 +23,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    fileio.cpp \
-    individual.cpp \
-    dataset.cpp \
-    factories.cpp \
-    resultsdocument.cpp \
-    spatialindividual.cpp \
-    multiplelineedit.cpp \
-    treeitem.cpp \
-    tablemodel.cpp \
-    treemodel.cpp \
-    population.cpp \
-    importgenotypesdialog.cpp
+SOURCES += main.cpp \
+    MainWindow.cpp
 
-HEADERS  += mainwindow.h \
-    fileio.h \
-    individual.h \
-    dataset.h \
-    factories.h \
-    resultsdocument.h \
-    spatialindividual.h \
-    multiplelineedit.h \
-    globalz.h \
-    treeitem.h \
-    tablemodel.h \
-    treemodel.h \
-    population.h \
-    importgenotypesdialog.h
-
-FORMS    += mainwindow.ui \
-    importgenotypesdialog.ui
+HEADERS  += \
+    MainWindow.h
+FORMS    +=
 
 DISTFILES += \
     media/characteristic_model.png \
@@ -66,8 +40,4 @@ RESOURCES += \
     ibx.qrc
 
 OTHER_FILES += \
-    media/map_base.html \
-    media/blank_page.html \
-    media/GSLogo.png \
-    AppStyleSheet.css \
-    media/ResultsStyleSheet.css
+    AppStyleSheet.css

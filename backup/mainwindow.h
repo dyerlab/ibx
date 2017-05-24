@@ -6,9 +6,9 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  MainWindow.h
+*  mainwindow.h
 *
-*  Created: 5 2017 by rodney
+*  Created: 3 2017 by rodney
 *
 *  Copyright 2017 rodney.  All Rights Reserved.
 *
@@ -28,17 +28,81 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+
+#include "dataset.h"
+#include "tablemodel.h"
+#include "treemodel.h"
+
+#include <QLabel>
+#include <QAction>
+#include <QTreeView>
+#include <QSplitter>
+#include <QTableView>
 #include <QMainWindow>
+#include <QTextBrowser>
+#include <QGraphicsView>
+#include <QStackedWidget>
+#include <QWebEngineView>
+
+namespace Ui {
+class MainWindow;
+}
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+
 public:
     explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
 
-signals:
+    void closeEvent(QCloseEvent *event);
 
-public slots:
+private:
+    Ui::MainWindow *ui;
+
+    QAction *actionOpen;
+    QAction *actionSave;
+    QAction *actionImport;
+    QAction *actionQuit;
+    QAction *actionShowResults;
+
+    QTreeView *dataTree;
+    TreeModel *dataTreeModel;
+
+    QStackedWidget *stackedWidget;
+
+    QLabel *homeLabel;
+    QLabel *viewLabel;
+
+    QTableView *tableView;
+    GenotypeTableModel *dataTableModel;
+
+    QWebEngineView *webView;
+
+    QTextBrowser *textBrowser;
+
+    QGraphicsView *graphicsView;
+
+    QSplitter *mainSplitter;
+
+    DataSet *theData;
+
+    void loadSettings();
+    void saveSettings();
+    void makeActions();
+    void makeMenus();
+    void makeUI();
+
+
+
+
+private slots:
+    void slotImport();
+    void slotSave();
+    void slotOpen();
+
+
 };
 
 #endif // MAINWINDOW_H
