@@ -6,9 +6,9 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  main.cpp
+*  Locus.H
 *
-*  Created: 3 2017 by rodney
+*  Created: 5 2017 by rodney
 *
 *  Copyright 2017 rodney.  All Rights Reserved.
 *
@@ -25,14 +25,35 @@
 *
 ******************************************************************************/
 
-#include "MainWindow.H"
-#include <QApplication>
+#ifndef LOCUS_H
+#define LOCUS_H
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+#include <QObject>
 
-    return a.exec();
-}
+
+class Locus : public QObject {
+  Q_OBJECT
+  Q_PROPERTY(QStringList m_alleles READ alleles WRITE setAlleles )
+
+public:
+  Locus( QObject *parent = 0);
+
+  QStringList alleles() const;
+  void setAlleles( QStringList alleles );
+
+  int ploidy() const;
+  bool isHeterozygote() const;
+  bool isEmpty() const ;
+
+  bool operator==(Locus *other);
+  bool operator!=(Locus *other);
+
+private:
+  QStringList m_alleles;
+
+};
+
+typedef Locus* LocusPtr;
+Q_DECLARE_METATYPE(LocusPtr)
+
+#endif // LOCUS_H

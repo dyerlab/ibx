@@ -6,9 +6,9 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  main.cpp
+*  Population.H
 *
-*  Created: 3 2017 by rodney
+*  Created: 5 2017 by rodney
 *
 *  Copyright 2017 rodney.  All Rights Reserved.
 *
@@ -25,14 +25,30 @@
 *
 ******************************************************************************/
 
-#include "MainWindow.H"
-#include <QApplication>
+#ifndef POPULATION_H
+#define POPULATION_H
 
-int main(int argc, char *argv[])
+#include <QObject>
+#include <QList>
+
+#include "Individual.H"
+
+class Population : public QObject
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+    Q_OBJECT
+public:
+    explicit Population(QObject *parent = 0);
 
-    return a.exec();
-}
+    void append( Individual *theInd );
+    Individual* get( int idx );
+
+signals:
+
+public slots:
+
+
+private:
+    QList<Individual*> m_individuals;
+};
+
+#endif // POPULATION_H

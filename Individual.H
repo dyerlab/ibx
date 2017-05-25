@@ -6,9 +6,9 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  main.cpp
+*  Individual.H
 *
-*  Created: 3 2017 by rodney
+*  Created: 5 2017 by rodney
 *
 *  Copyright 2017 rodney.  All Rights Reserved.
 *
@@ -25,14 +25,36 @@
 *
 ******************************************************************************/
 
-#include "MainWindow.H"
-#include <QApplication>
+#ifndef INDIVIDUAL_H
+#define INDIVIDUAL_H
 
-int main(int argc, char *argv[])
+#include <QVariant>
+#include <QObject>
+#include <QHash>
+#include "Locus.H"
+
+class Individual : public QObject
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+    Q_OBJECT
+public:
+    explicit Individual(QObject *parent = 0);
 
-    return a.exec();
-}
+    void setData(QString key, QVariant value);
+    QVariant getData( QString key );
+
+    void setData(QString key, Locus *theLoc );
+    Locus* getLocus( QString key);
+
+    QStringList keys() const;
+    int count() const;
+
+signals:
+
+public slots:
+
+private:
+    QHash<QString,QVariant> m_data;
+
+};
+
+#endif // INDIVIDUAL_H

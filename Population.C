@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  MainWindow.cpp
+*  Population.C
 *
 *  Created: 5 2017 by rodney
 *
@@ -25,9 +25,20 @@
 *
 ******************************************************************************/
 
-#include "MainWindow.h"
+#include "Population.H"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
+Population::Population(QObject *parent) : QObject(parent)
 {
 
+}
+
+
+void Population::append(Individual *theInd) {
+    m_individuals.append(theInd);
+}
+
+Individual* Population::get(int idx) {
+    Q_ASSERT( m_individuals.count() < idx );
+
+    return m_individuals.at(idx);
 }

@@ -6,9 +6,9 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  main.cpp
+*  DialogImportGenotypes.H
 *
-*  Created: 3 2017 by rodney
+*  Created: 5 2017 by rodney
 *
 *  Copyright 2017 rodney.  All Rights Reserved.
 *
@@ -25,14 +25,48 @@
 *
 ******************************************************************************/
 
-#include "MainWindow.H"
-#include <QApplication>
+#ifndef DIALOGIMPORTGENOTYPES_H
+#define DIALOGIMPORTGENOTYPES_H
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+#include <QHash>
+#include <QString>
+#include <QDialog>
+#include <QListWidget>
+#include "Globalz.H"
 
-    return a.exec();
+
+
+
+namespace Ui {
+class DialogImportGenotypes;
 }
+
+class DialogImportGenotypes : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit DialogImportGenotypes(QWidget *parent = 0);
+    ~DialogImportGenotypes();
+
+    void setHeaders(QStringList headers);
+
+    LOCUS_TYPE getLocusType() const ;
+    QHash<QString,COLUMN_TYPE> dataTypes();
+
+
+private:
+    Ui::DialogImportGenotypes *ui;
+
+
+private slots:
+
+    void slotHeader2Strata();
+    void slotHeader2External();
+    void slotHeader2Loci();
+    void slotStrata2Header();
+    void slotExternal2Header();
+    void slotLoci2Header();
+};
+
+#endif // DIALOGIMPORTGENOTYPES_H

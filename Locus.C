@@ -6,9 +6,9 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  main.cpp
+*  Locus.C
 *
-*  Created: 3 2017 by rodney
+*  Created: 5 2017 by rodney
 *
 *  Copyright 2017 rodney.  All Rights Reserved.
 *
@@ -25,14 +25,40 @@
 *
 ******************************************************************************/
 
-#include "MainWindow.H"
-#include <QApplication>
+#include "Locus.H"
+#include <QSet>
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
 
-    return a.exec();
+Locus::Locus(QObject *parent) : QObject(parent) {
+
+}
+
+
+QStringList Locus::alleles() const {
+  return m_alleles;
+}
+
+void Locus::setAlleles( QStringList alleles ) {
+  m_alleles = alleles;
+  std::sort(m_alleles.begin(), m_alleles.end());
+}
+
+int Locus::ploidy() const {
+  return m_alleles.count();
+}
+
+bool Locus::isHeterozygote() const {
+  return m_alleles.toSet().count() > 1;
+}
+
+bool Locus::isEmpty() const {
+  return ploidy()==0;
+}
+
+bool Locus::operator ==(Locus *other) {
+  return m_alleles == other->m_alleles;
+}
+
+bool Locus::operator !=(Locus *other) {
+  return !(this==other);
 }

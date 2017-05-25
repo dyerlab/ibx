@@ -6,9 +6,9 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  main.cpp
+*  Globalz
 *
-*  Created: 3 2017 by rodney
+*  Created: 5 2017 by rodney
 *
 *  Copyright 2017 rodney.  All Rights Reserved.
 *
@@ -25,14 +25,24 @@
 *
 ******************************************************************************/
 
-#include "MainWindow.H"
-#include <QApplication>
+#ifndef GLOBALZ_H
+#define GLOBALZ_H
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
 
-    return a.exec();
-}
+typedef enum {
+    LOCUS_TYPE_UNDEFINED,
+    LOCUS_TYPE_HAPLOID,
+    LOCUS_TYPE_SEPARATED,
+    LOCUS_TYPE_2_COLUMN
+} LOCUS_TYPE;
+
+
+typedef enum {
+    COLUMN_TYPE_UNDEFINED,
+    COLUMN_TYPE_STRATUM,
+    COLUMN_TYPE_EXTERNAL,
+    COLUMN_TYPE_LOCUS
+} COLUMN_TYPE;
+
+
+#endif // GLOBALZ_H

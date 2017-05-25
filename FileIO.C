@@ -6,9 +6,9 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  main.cpp
+*  FileIO
 *
-*  Created: 3 2017 by rodney
+*  Created: 5 2017 by rodney
 *
 *  Copyright 2017 rodney.  All Rights Reserved.
 *
@@ -25,14 +25,30 @@
 *
 ******************************************************************************/
 
-#include "MainWindow.H"
-#include <QApplication>
+#include "FileIO.H"
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
 
-    return a.exec();
+Population* importPopulationFromFile( QString path ) {
+    Population *thePop = new Population();
+    DialogImportGenotypes *dlg = new DialogImportGenotypes();
+    QStringList headers;
+    headers << "Population" << "ID" << "Latitude" << "Longitude" << "Locus1" << "Locus2";
+
+    dlg->setHeaders(headers);
+
+    if( dlg->exec() == QDialog::Accepted )
+        qDebug() << "Accepted";
+    else
+        qDebug() << "Rejected";
+
+    qDebug() << dlg->dataTypes();
+
+    delete( dlg );
+
+
+
+
+
+
+    return thePop;
 }

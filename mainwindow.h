@@ -28,17 +28,49 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QStackedWidget>
+#include <QApplication>
 #include <QMainWindow>
+#include <QTableView>
+#include <QSplitter>
+#include <QTreeView>
+#include <QAction>
+
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
+  Q_OBJECT
 public:
-    explicit MainWindow(QWidget *parent = 0);
+  explicit MainWindow(QWidget *parent = 0);
+  ~MainWindow();
 
 signals:
 
 public slots:
+
+  void slotImportGenotypes();
+
+private:
+
+  QSplitter *mainSplitter;
+
+  QTreeView *itemList;
+
+  QStackedWidget *stackedWidget;
+  QTableView *tableView;
+
+  QAction *quitAction;
+  QAction *importGeneticDataAction;
+
+
+  void makeUI();
+  void makeActions();
+  void makeMenus();
+
+  void closeEvent(QCloseEvent *event) override;
+  void loadSettings();
+  void saveSettings();
+
 };
 
 #endif // MAINWINDOW_H

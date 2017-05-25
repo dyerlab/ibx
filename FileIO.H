@@ -6,9 +6,9 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  main.cpp
+*  FileIO
 *
-*  Created: 3 2017 by rodney
+*  Created: 5 2017 by rodney
 *
 *  Copyright 2017 rodney.  All Rights Reserved.
 *
@@ -25,14 +25,22 @@
 *
 ******************************************************************************/
 
-#include "MainWindow.H"
+#ifndef FILEIO_H
+#define FILEIO_H
+
+#include <QString>
+#include <QFileDialog>
 #include <QApplication>
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+#include "Population.H"
 
-    return a.exec();
-}
+
+
+
+
+
+Population* importPopulationFromFile( QString path );
+
+
+
+#endif // FILEIO_H

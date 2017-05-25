@@ -6,9 +6,9 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  main.cpp
+*  Individual.C
 *
-*  Created: 3 2017 by rodney
+*  Created: 5 2017 by rodney
 *
 *  Copyright 2017 rodney.  All Rights Reserved.
 *
@@ -25,14 +25,42 @@
 *
 ******************************************************************************/
 
-#include "MainWindow.H"
-#include <QApplication>
+#include "Individual.H"
 
-int main(int argc, char *argv[])
+Individual::Individual(QObject *parent) : QObject(parent)
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
 
-    return a.exec();
+}
+
+
+void Individual::setData(QString key, QVariant value) {
+    m_data.insert(key,value);
+}
+
+QVariant Individual::getData( QString key ) {
+    return m_data.value(key, QVariant(QString("")));
+}
+
+void Individual::setData(QString key, Locus *theLoc ) {
+    QVariant value = qVariantFromValue( (void*)theLoc );
+    m_data.insert(key,value);
+}
+
+Locus* Individual::getLocus( QString key) {
+    if( m_data.keys().contains(key)){
+        QVariant v = m_data.value(key);
+        Locus *theLoc = (Locus*) v.value<void*>();
+        return theLoc;
+    }
+    else {
+        return new Locus();
+    }
+}
+
+QStringList Individual::keys() const {
+    return m_data.keys();
+}
+
+int Individual::count() const {
+    return m_data.count();
 }

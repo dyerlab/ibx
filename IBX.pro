@@ -24,11 +24,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp \
-    MainWindow.cpp
+    MainWindow.C \
+    Locus.C \
+    Individual.C \
+    Population.C \
+    FileIO.C \
+    DialogImportGenotypes.C
 
 HEADERS  += \
-    MainWindow.h
-FORMS    +=
+    MainWindow.H \
+    Locus.H \
+    Globalz.H \
+    Individual.H \
+    Population.H \
+    FileIO.H \
+    DialogImportGenotypes.H
+
+FORMS    += \
+    DialogImportGenotypes.ui
 
 DISTFILES += \
     media/characteristic_model.png \
