@@ -28,32 +28,38 @@
 #ifndef INDIVIDUAL_H
 #define INDIVIDUAL_H
 
+#include <QStringList>
 #include <QVariant>
 #include <QObject>
 #include <QHash>
+
 #include "Locus.H"
+#include "Globalz.H"
 
 class Individual : public QObject
 {
     Q_OBJECT
+
 public:
     explicit Individual(QObject *parent = 0);
 
-    void setData(QString key, QVariant value);
+    void setData(QString key, QVariant value, COLUMN_TYPE type);
     QVariant getData( QString key );
 
     void setData(QString key, Locus *theLoc );
     Locus* getLocus( QString key);
+    QStringList locusNames();
+    int numLoci();
 
     QStringList keys() const;
+    COLUMN_TYPE typeForKey(QString key) const;
     int count() const;
 
-signals:
-
-public slots:
+    QString toString() ;
 
 private:
     QHash<QString,QVariant> m_data;
+    QHash<QString,COLUMN_TYPE> m_data_type;
 
 };
 

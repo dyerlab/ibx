@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  MainWindow.h
+*  DataSet.C
 *
 *  Created: 5 2017 by rodney
 *
@@ -25,58 +25,23 @@
 *
 ******************************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
-#include <QStackedWidget>
-#include <QApplication>
-#include <QMainWindow>
-#include <QTableView>
-#include <QSplitter>
-#include <QTreeView>
-#include <QAction>
-
 #include "DataSet.H"
 
+DataSet::DataSet() {
+
+}
 
 
-class MainWindow : public QMainWindow
-{
-  Q_OBJECT
-public:
-  explicit MainWindow(QWidget *parent = 0);
-  ~MainWindow();
 
-signals:
+void DataSet::setPopulation(Population *thePop) {
+    m_population = thePop;
+    m_genotypeTableModel = new GenotypeTableModel( m_population );
+}
 
-public slots:
+Population* DataSet::getPopulation() {
+    return m_population;
+}
 
-  void slotImportGenotypes();
-
-private:
-
-  DataSet *theData;
-
-  QSplitter *mainSplitter;
-
-  QTreeView *itemList;
-
-  QStackedWidget *stackedWidget;
-  QTableView *tableView;
-
-  QAction *quitAction;
-  QAction *importGeneticDataAction;
-
-
-  void makeUI();
-  void makeActions();
-  void makeMenus();
-  void makeDataStructures();
-
-  void closeEvent(QCloseEvent *event) override;
-  void loadSettings();
-  void saveSettings();
-
-};
-
-#endif // MAINWINDOW_H
+GenotypeTableModel* DataSet::getGenotypeTableModel() const {
+    return m_genotypeTableModel;
+}

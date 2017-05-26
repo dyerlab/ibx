@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  MainWindow.h
+*  GenotypeTableItemDelegate.H
 *
 *  Created: 5 2017 by rodney
 *
@@ -25,58 +25,24 @@
 *
 ******************************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef GENOTYPETABLEITEMDELEGATE_H
+#define GENOTYPETABLEITEMDELEGATE_H
 
-#include <QStackedWidget>
-#include <QApplication>
-#include <QMainWindow>
-#include <QTableView>
-#include <QSplitter>
-#include <QTreeView>
-#include <QAction>
-
-#include "DataSet.H"
+#include <QObject>
+#include <QItemDelegate>
 
 
-
-class MainWindow : public QMainWindow
+class GenotypeTableItemDelegate : public QItemDelegate
 {
-  Q_OBJECT
+    Q_OBJECT
+
 public:
-  explicit MainWindow(QWidget *parent = 0);
-  ~MainWindow();
+    GenotypeTableItemDelegate(QObject *parent = 0);
 
-signals:
-
-public slots:
-
-  void slotImportGenotypes();
-
-private:
-
-  DataSet *theData;
-
-  QSplitter *mainSplitter;
-
-  QTreeView *itemList;
-
-  QStackedWidget *stackedWidget;
-  QTableView *tableView;
-
-  QAction *quitAction;
-  QAction *importGeneticDataAction;
-
-
-  void makeUI();
-  void makeActions();
-  void makeMenus();
-  void makeDataStructures();
-
-  void closeEvent(QCloseEvent *event) override;
-  void loadSettings();
-  void saveSettings();
-
+    QWidget* createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const;
+    void setModelData(QWidget *editor, QAbstractItemModel *model,const QModelIndex &index) const;
+    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
-#endif // MAINWINDOW_H
+#endif // GENOTYPETABLEITEMDELEGATE_H

@@ -45,4 +45,5 @@ typedef enum {
 } COLUMN_TYPE;
 
 
+
 #endif // GLOBALZ_H

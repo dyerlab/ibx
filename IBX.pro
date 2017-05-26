@@ -29,7 +29,12 @@ SOURCES += main.cpp \
     Individual.C \
     Population.C \
     FileIO.C \
-    DialogImportGenotypes.C
+    DialogImportGenotypes.C \
+    DataSet.C \
+    GenotypeTableModel.C \
+    GenotypeTableItemDelegate.C \
+    DoubleEdit.C \
+    TableItemDelegate.C
 
 HEADERS  += \
     MainWindow.H \
@@ -38,7 +43,12 @@ HEADERS  += \
     Individual.H \
     Population.H \
     FileIO.H \
-    DialogImportGenotypes.H
+    DialogImportGenotypes.H \
+    DataSet.H \
+    GenotypeTableModel.H \
+    GenotypeTableItemDelegate.H \
+    DoubleEdit.H \
+    TableItemDelegate.H
 
 FORMS    += \
     DialogImportGenotypes.ui

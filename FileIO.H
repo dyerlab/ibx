@@ -32,6 +32,7 @@
 #include <QFileDialog>
 #include <QApplication>
 
+#include "Globalz.H"
 #include "Population.H"
 
 
@@ -39,8 +40,10 @@
 
 
 
-Population* importPopulationFromFile( QString path );
+Population* importPopulationFromFile(QStringList headers, QList<QStringList> lines, LOCUS_TYPE locusType, QHash<QString,COLUMN_TYPE> columnTypes);
+
 
 
 
 #endif // FILEIO_H
+

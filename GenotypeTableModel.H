@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  MainWindow.h
+*  GenotypeTableModel.H
 *
 *  Created: 5 2017 by rodney
 *
@@ -25,58 +25,36 @@
 *
 ******************************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef GENOTYPETABLEMODEL_H
+#define GENOTYPETABLEMODEL_H
 
-#include <QStackedWidget>
-#include <QApplication>
-#include <QMainWindow>
-#include <QTableView>
-#include <QSplitter>
-#include <QTreeView>
-#include <QAction>
+#include "Globalz.H"
+#include "Population.H"
 
-#include "DataSet.H"
+#include <QColor>
+#include <QString>
+#include <QAbstractTableModel>
 
 
-
-class MainWindow : public QMainWindow
+class GenotypeTableModel : public QAbstractTableModel
 {
-  Q_OBJECT
 public:
-  explicit MainWindow(QWidget *parent = 0);
-  ~MainWindow();
+    GenotypeTableModel(Population *thePop);
 
-signals:
-
-public slots:
-
-  void slotImportGenotypes();
+    // TabelModelStuff
+    Qt::ItemFlags flags ( const QModelIndex & index ) const;
+    int rowCount( const QModelIndex & parent = QModelIndex() ) const;
+    int columnCount( const QModelIndex & parent = QModelIndex() ) const;
+    QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
+    bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::EditRole );
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    bool setHeaderData ( int section, Qt::Orientation orientation, const QVariant & value, int role );
 
 private:
-
-  DataSet *theData;
-
-  QSplitter *mainSplitter;
-
-  QTreeView *itemList;
-
-  QStackedWidget *stackedWidget;
-  QTableView *tableView;
-
-  QAction *quitAction;
-  QAction *importGeneticDataAction;
-
-
-  void makeUI();
-  void makeActions();
-  void makeMenus();
-  void makeDataStructures();
-
-  void closeEvent(QCloseEvent *event) override;
-  void loadSettings();
-  void saveSettings();
+    Population *m_population;
+    QHash<QString,COLUMN_TYPE> m_dataTypes;
+    QStringList m_headers;
 
 };
 
-#endif // MAINWINDOW_H
+#endif // GENOTYPETABLEMODEL_H

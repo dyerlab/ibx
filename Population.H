@@ -41,6 +41,7 @@ public:
 
     void append( Individual *theInd );
     Individual* get( int idx );
+    int count() const;
 
 signals:
 

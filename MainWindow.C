@@ -25,10 +25,14 @@
 *
 ******************************************************************************/
 
+#include "FileIO.H"
+#include "Globalz.H"
 #include "MainWindow.H"
 #include "DialogImportGenotypes.H"
 
+#include <QMessageBox>
 #include <QCloseEvent>
+#include <QFileDialog>
 #include <QSettings>
 #include <QMenuBar>
 #include <QDialog>
@@ -42,10 +46,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   makeActions();
   makeMenus();
   loadSettings();
+  makeDataStructures();
 }
 
 MainWindow::~MainWindow() {
   saveSettings();
+  delete( theData );
 }
 
 void MainWindow::makeUI() {
@@ -120,6 +126,78 @@ void MainWindow::saveSettings() {
 }
 
 
+void MainWindow::makeDataStructures(){
+    theData = new DataSet();
+}
+
+
 void MainWindow::slotImportGenotypes() {
+    QString fileName = QFileDialog::getOpenFileName( qApp->activeWindow(),
+                                                     tr("Save GeneticStudio File"),
+                                                     tr(""),
+                                                     tr("Raw Genotypes (*.csv)"),
+                                                     0,
+                                                     QFileDialog::DontUseSheet);
+    if( fileName.isEmpty() )
+        return;
+
+    QFile file(fileName);
+    if( !file.open(QIODevice::ReadOnly)){
+        QMessageBox messageBox;
+        messageBox.setText(tr("The file requested could not be opened as a read only file."));
+        messageBox.setIcon(QMessageBox::Critical);
+        messageBox.exec();
+        file.close();
+        return;
+    }
+
+    // grab the header;
+    QTextStream stream(&file);
+
+    QStringList headers = stream.readLine().split(",");
+    if( !headers.count() ) {
+        QMessageBox messageBox;
+        messageBox.setText(tr("The file is supposed to be a CSV file and the first line is supposed to have column headers indicating the names of each data column."));
+        messageBox.setIcon(QMessageBox::Critical);
+        messageBox.exec();
+        file.close();
+        return;
+    }
+
+    DialogImportGenotypes *dlg = new DialogImportGenotypes(this);
+    dlg->setHeaders( headers );
+    if( dlg->exec() == QDialog::Rejected ){
+        delete(dlg);
+        file.close();
+        return;
+    }
+
+    QHash<QString,COLUMN_TYPE> columnTypes = dlg->dataTypes();
+    LOCUS_TYPE locusType = dlg->getLocusType();
+    delete( dlg );
+
+    QList<QStringList> lines;
+    while( !stream.atEnd()){
+        lines << stream.readLine().split(",");
+    }
+    file.close();
+
+
+    Population *thePop = importPopulationFromFile(headers,
+                                                  lines,
+                                                  locusType,
+                                                  columnTypes);
+
+    qDebug() << "Loaded " << thePop->count() << " individuals";
+
+    if( thePop->count() && thePop->get(0)->numLoci() ) {
+        theData->setPopulation( thePop );
+        tableView->setModel( theData->getGenotypeTableModel() );
+        stackedWidget->setCurrentIndex(1);
+        tableView->update();
+    }
+    else
+        delete( thePop );
+
 
 }

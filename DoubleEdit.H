@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  MainWindow.h
+*  DoubleEdit.H
 *
 *  Created: 5 2017 by rodney
 *
@@ -25,58 +25,27 @@
 *
 ******************************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef DOUBLEEDIT_H
+#define DOUBLEEDIT_H
 
-#include <QStackedWidget>
-#include <QApplication>
-#include <QMainWindow>
-#include <QTableView>
-#include <QSplitter>
-#include <QTreeView>
-#include <QAction>
-
-#include "DataSet.H"
+#include <QWidget>
+#include <QLineEdit>
 
 
-
-class MainWindow : public QMainWindow
+class DoubleEdit : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  explicit MainWindow(QWidget *parent = 0);
-  ~MainWindow();
+    explicit DoubleEdit(QWidget *parent = 0);
+    void setText( QString txt );
+    QString getText( );
 
-signals:
-
-public slots:
-
-  void slotImportGenotypes();
+    bool focusNextPrevChild(bool next);
 
 private:
-
-  DataSet *theData;
-
-  QSplitter *mainSplitter;
-
-  QTreeView *itemList;
-
-  QStackedWidget *stackedWidget;
-  QTableView *tableView;
-
-  QAction *quitAction;
-  QAction *importGeneticDataAction;
-
-
-  void makeUI();
-  void makeActions();
-  void makeMenus();
-  void makeDataStructures();
-
-  void closeEvent(QCloseEvent *event) override;
-  void loadSettings();
-  void saveSettings();
+    QLineEdit *leftEdit;
+    QLineEdit *rightEdit;
 
 };
 
-#endif // MAINWINDOW_H
+#endif // DOUBLEEDIT_H

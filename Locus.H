@@ -30,7 +30,6 @@
 
 #include <QObject>
 
-
 class Locus : public QObject {
   Q_OBJECT
   Q_PROPERTY(QStringList m_alleles READ alleles WRITE setAlleles )
@@ -47,6 +46,8 @@ public:
 
   bool operator==(Locus *other);
   bool operator!=(Locus *other);
+
+  QString toString() const;
 
 private:
   QStringList m_alleles;

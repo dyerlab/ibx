@@ -62,3 +62,10 @@ bool Locus::operator ==(Locus *other) {
 bool Locus::operator !=(Locus *other) {
   return !(this==other);
 }
+
+QString Locus::toString() const {
+    if( m_alleles.count())
+        return m_alleles.join(":");
+    else
+        return QString("");
+}

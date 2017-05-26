@@ -38,7 +38,9 @@ void Population::append(Individual *theInd) {
 }
 
 Individual* Population::get(int idx) {
-    Q_ASSERT( m_individuals.count() < idx );
-
     return m_individuals.at(idx);
+}
+
+int Population::count() const {
+    return m_individuals.count();
 }

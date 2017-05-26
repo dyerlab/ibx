@@ -25,30 +25,69 @@
 *
 ******************************************************************************/
 
+#include <QDebug>
+#include <QStringList>
+#include "Individual.H"
 #include "FileIO.H"
+#include "Locus.H"
 
 
-Population* importPopulationFromFile( QString path ) {
+
+Population* importPopulationFromFile(QStringList headers, QList<QStringList> lines, LOCUS_TYPE locusType, QHash<QString,COLUMN_TYPE> columnTypes) {
     Population *thePop = new Population();
-    DialogImportGenotypes *dlg = new DialogImportGenotypes();
-    QStringList headers;
-    headers << "Population" << "ID" << "Latitude" << "Longitude" << "Locus1" << "Locus2";
-
-    dlg->setHeaders(headers);
-
-    if( dlg->exec() == QDialog::Accepted )
-        qDebug() << "Accepted";
-    else
-        qDebug() << "Rejected";
-
-    qDebug() << dlg->dataTypes();
-
-    delete( dlg );
 
 
 
 
+    foreach( QStringList line, lines ){
+
+        int col = 0;
+        QString key;
+        QString value;
+        COLUMN_TYPE colType;
+
+        Individual *theInd = new Individual();
+
+        while( col < line.count()){
+
+            key = headers.at(col);
+            value = line.at(col);
+            colType = columnTypes.value(key);
+
+            if( colType == COLUMN_TYPE_LOCUS ){
+                Locus *theLoc = new Locus();
+                QStringList alleles;
+
+                switch( locusType ){
+                case LOCUS_TYPE_HAPLOID:
+                    alleles << value;
+                    break;
+                case LOCUS_TYPE_SEPARATED:
+                    alleles = value.split(":");
+                    break;
+                case LOCUS_TYPE_2_COLUMN:
+                    alleles << value;
+                    col++;
+                    alleles << line.at(col);
+                    break;
+                default:
+                    qCritical() << "Error, you should not be getting this error.";
+                    break;
+                }
+
+                theLoc->setAlleles(alleles);
+                theInd->setData(key,theLoc);
+            }
+            else
+                theInd->setData(key,value,colType);
+
+            col++;
+        }
+        thePop->append( theInd );
+    }
 
 
     return thePop;
 }
+
+
