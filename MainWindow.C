@@ -193,6 +193,7 @@ void MainWindow::slotImportGenotypes() {
     if( thePop->count() && thePop->get(0)->numLoci() ) {
         theData->setPopulation( thePop );
         tableView->setModel( theData->getGenotypeTableModel() );
+        theData->getGenotypeTableModel()->setDelegates(tableView);
         stackedWidget->setCurrentIndex(1);
         tableView->update();
     }

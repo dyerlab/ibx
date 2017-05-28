@@ -26,7 +26,11 @@
 ******************************************************************************/
 
 #include <QDebug>
+
+
+#include "TableItemDelegate.H"
 #include "GenotypeTableModel.H"
+#include "GenotypeTableItemDelegate.H"
 
 GenotypeTableModel::GenotypeTableModel(Population *thePop) {
     m_population = thePop;
@@ -151,3 +155,42 @@ bool GenotypeTableModel::setHeaderData ( int section, Qt::Orientation orientatio
     Q_UNUSED( role );
     return false ;
 }
+
+
+void GenotypeTableModel::setDelegates( QTableView *tableView ) {
+    for( int i=0;i<m_headers.count();i++){
+        COLUMN_TYPE type = m_dataTypes.value( m_headers.at(i) );
+        if( type == COLUMN_TYPE_LOCUS ){
+            tableView->setItemDelegateForColumn(i, new GenotypeTableItemDelegate() );
+        }
+        else {
+            tableView->setItemDelegateForColumn(i, new TableItemDelegate() );
+        }
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
