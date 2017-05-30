@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  Globalz
+*  ResultsText.H
 *
 *  Created: 5 2017 by rodney
 *
@@ -25,29 +25,43 @@
 *
 ******************************************************************************/
 
-#ifndef GLOBALZ_H
-#define GLOBALZ_H
+#ifndef RESULTSTEXT_H
+#define RESULTSTEXT_H
+
+#include <QUrl>
+#include <QPair>
+#include <QList>
+#include <QString>
+#include <QTextEdit>
+#include <QTextDocument>
+
+#include "DataBase.H"
+
+class DataResults : public DataBase {
+
+public:
+    DataResults();
+    ~DataResults();
+
+    inline QWidget* getWidget() { return m_textEdit; }
+    QTextDocument* getTextDocument();
+
+    void appendHeader( QString text );
+    void appendSubHeader( QString text );
+    void appendSubSubHeader( QString text );
+    void appendText( QString text );
+    void appendList( QStringList lines, bool isUnordered=true );
+    void appendTable( QString header, QList<QStringList> contents, QString colHeader, QString caption);
+    void addResource( int type, QUrl url, QVariant var );
+    void appendErrorMessage( QString msg );
 
 
-typedef enum {
-    LOCUS_TYPE_UNDEFINED,
-    LOCUS_TYPE_HAPLOID,
-    LOCUS_TYPE_SEPARATED,
-    LOCUS_TYPE_2_COLUMN
-} LOCUS_TYPE;
+private:
+
+    QTextEdit *m_textEdit;
+    QList< QPair<int, QUrl> > m_resources;
 
 
-typedef enum {
-    COLUMN_TYPE_UNDEFINED,
-    COLUMN_TYPE_STRATUM,
-    COLUMN_TYPE_EXTERNAL,
-    COLUMN_TYPE_LOCUS
-} COLUMN_TYPE;
+};
 
-typedef enum {
-    DATA_TYPE_UNDEFINED,
-    DATA_TYPE_GENOTYPES,
-    DATA_TYPE_RESULTS
-} DATA_TYPE;
-
-#endif // GLOBALZ_H
+#endif // RESULTSTEXT_H

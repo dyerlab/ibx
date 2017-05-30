@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  Globalz
+*  DataBase.C
 *
 *  Created: 5 2017 by rodney
 *
@@ -25,29 +25,34 @@
 *
 ******************************************************************************/
 
-#ifndef GLOBALZ_H
-#define GLOBALZ_H
+#include "DataBase.H"
 
+DataBase::DataBase() {
+    m_type = DATA_TYPE_UNDEFINED;
+    m_treeWidgetItem = new QTreeWidgetItem();
+}
 
-typedef enum {
-    LOCUS_TYPE_UNDEFINED,
-    LOCUS_TYPE_HAPLOID,
-    LOCUS_TYPE_SEPARATED,
-    LOCUS_TYPE_2_COLUMN
-} LOCUS_TYPE;
+DataBase::~DataBase() {
+    delete m_treeWidgetItem;
+}
 
+DATA_TYPE DataBase::dataType(){
+    return m_type;
+}
 
-typedef enum {
-    COLUMN_TYPE_UNDEFINED,
-    COLUMN_TYPE_STRATUM,
-    COLUMN_TYPE_EXTERNAL,
-    COLUMN_TYPE_LOCUS
-} COLUMN_TYPE;
+void DataBase::setLabel( QString value ) {
+    m_label = value;
+    m_treeWidgetItem->setText(0,m_label);
+}
 
-typedef enum {
-    DATA_TYPE_UNDEFINED,
-    DATA_TYPE_GENOTYPES,
-    DATA_TYPE_RESULTS
-} DATA_TYPE;
+QString DataBase::getLabel() const {
+    return m_label;
+}
 
-#endif // GLOBALZ_H
+QTreeWidgetItem* DataBase::getTreeWidget() {
+    return m_treeWidgetItem;
+}
+
+QStringList DataBase::getWarnings() {
+    return m_warnings;
+}

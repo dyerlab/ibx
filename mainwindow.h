@@ -36,7 +36,7 @@
 #include <QTreeView>
 #include <QAction>
 
-#include "DataSet.H"
+#include "DataManager.H"
 
 
 
@@ -51,15 +51,16 @@ signals:
 
 public slots:
 
-  void slotImportGenotypes();
+    void slotImportGenotypes();
 
 private:
 
-  DataSet *theData;
+
+  DataManager *theData;
 
   QSplitter *mainSplitter;
 
-  QTreeView *itemList;
+  QTreeView *treeView;
 
   QStackedWidget *stackedWidget;
   QTableView *tableView;
@@ -71,7 +72,6 @@ private:
   void makeUI();
   void makeActions();
   void makeMenus();
-  void makeDataStructures();
 
   void closeEvent(QCloseEvent *event) override;
   void loadSettings();

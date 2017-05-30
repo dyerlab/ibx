@@ -25,23 +25,29 @@
 *
 ******************************************************************************/
 
-#include "DataSet.H"
+#include "DataGenotypes.H"
 
-DataSet::DataSet() {
-
+DataGenotypes::DataGenotypes() : DataBase() {
+    m_type = DATA_TYPE_GENOTYPES;
 }
 
+DataGenotypes::~DataGenotypes() {
+    delete m_genotypeTableModel;
+    delete m_tableView;
+}
 
-
-void DataSet::setPopulation(Population *thePop) {
+void DataGenotypes::setPopulation(Population *thePop) {
     m_population = thePop;
     m_genotypeTableModel = new GenotypeTableModel( m_population );
+    m_tableView = new QTableView();
+    m_tableView->setModel( m_genotypeTableModel );
+    m_genotypeTableModel->setDelegates( m_tableView );
 }
 
-Population* DataSet::getPopulation() {
+Population* DataGenotypes::getPopulation() {
     return m_population;
 }
 
-GenotypeTableModel* DataSet::getGenotypeTableModel() const {
+GenotypeTableModel* DataGenotypes::getGenotypeTableModel() const {
     return m_genotypeTableModel;
 }

@@ -1,0 +1,32 @@
+
+/********************** HEADER ELEMENTS ******************************/
+h1 {
+   color: #c2984b;
+}
+
+h2 {
+   color: #354a7b;
+}
+
+h2 {
+   color: #354a7b;
+}
+
+
+/********************** TABLE ELEMENTS ******************************/
+table {
+      cellspacing: 0px;
+      cellpadding: 0px;
+      border-style: none;
+}
+
+th {
+   align: center;
+}
+
+td {
+   align: center;
+}
+
+
+

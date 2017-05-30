@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  Globalz
+*  DataManager.H
 *
 *  Created: 5 2017 by rodney
 *
@@ -25,29 +25,31 @@
 *
 ******************************************************************************/
 
-#ifndef GLOBALZ_H
-#define GLOBALZ_H
+#ifndef DATAMANAGER_H
+#define DATAMANAGER_H
+
+#include <QObject>
+#include <QTreeView>
+#include <QApplication>
+#include <QStackedWidget>
+
+#include "DataGenotypes.H"
+
+class DataManager : public QObject
+{
+    Q_OBJECT
+public:
+    explicit DataManager(QStackedWidget *stackedWidget, QTreeView *listWidget, QObject *parent = 0);
+    ~DataManager();
+
+    void importGenotypes();
 
 
-typedef enum {
-    LOCUS_TYPE_UNDEFINED,
-    LOCUS_TYPE_HAPLOID,
-    LOCUS_TYPE_SEPARATED,
-    LOCUS_TYPE_2_COLUMN
-} LOCUS_TYPE;
+private:
+    DataGenotypes *m_genotypes;
+    QStackedWidget *m_stackedWidget;
+    QTreeView *m_treeView;
 
+};
 
-typedef enum {
-    COLUMN_TYPE_UNDEFINED,
-    COLUMN_TYPE_STRATUM,
-    COLUMN_TYPE_EXTERNAL,
-    COLUMN_TYPE_LOCUS
-} COLUMN_TYPE;
-
-typedef enum {
-    DATA_TYPE_UNDEFINED,
-    DATA_TYPE_GENOTYPES,
-    DATA_TYPE_RESULTS
-} DATA_TYPE;
-
-#endif // GLOBALZ_H
+#endif // DATAMANAGER_H

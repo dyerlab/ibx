@@ -30,11 +30,14 @@ SOURCES += main.cpp \
     Population.C \
     FileIO.C \
     DialogImportGenotypes.C \
-    DataSet.C \
     GenotypeTableModel.C \
     GenotypeTableItemDelegate.C \
     DoubleEdit.C \
-    TableItemDelegate.C
+    TableItemDelegate.C \
+    DataManager.C \
+    DataGenotypes.C \
+    DataBase.C \
+    DataResults.C
 
 HEADERS  += \
     MainWindow.H \
@@ -44,11 +47,14 @@ HEADERS  += \
     Population.H \
     FileIO.H \
     DialogImportGenotypes.H \
-    DataSet.H \
     GenotypeTableModel.H \
     GenotypeTableItemDelegate.H \
     DoubleEdit.H \
-    TableItemDelegate.H
+    TableItemDelegate.H \
+    DataManager.H \
+    DataGenotypes.H \
+    DataBase.H \
+    DataResults.H
 
 FORMS    += \
     DialogImportGenotypes.ui
@@ -57,7 +63,8 @@ DISTFILES += \
     media/characteristic_model.png \
     LICENSE \
     README.md \
-    AppStyleSheet.css
+    AppStyleSheet.css \
+    media/ibx_results.css
 
 RESOURCES += \
     ibx.qrc

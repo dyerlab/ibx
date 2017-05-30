@@ -28,17 +28,21 @@
 #ifndef DATASET_H
 #define DATASET_H
 
+#include "DataBase.H"
 #include "Population.H"
 #include "GenotypeTableModel.H"
 
 
-class DataSet
-{
+class DataGenotypes : public DataBase {
+
 public:
-    DataSet();
+    DataGenotypes();
+    ~DataGenotypes();
 
     void setPopulation( Population *thePop );
     Population* getPopulation();
+
+    inline QWidget* getWidget() { return m_tableView; }
 
     GenotypeTableModel* getGenotypeTableModel() const;
 
@@ -47,6 +51,7 @@ private:
 
     Population *m_population;
     GenotypeTableModel *m_genotypeTableModel;
+    QTableView *m_tableView;
 
 };
 

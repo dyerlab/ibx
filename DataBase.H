@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  Globalz
+*  DataBase.H
 *
 *  Created: 5 2017 by rodney
 *
@@ -25,29 +25,53 @@
 *
 ******************************************************************************/
 
-#ifndef GLOBALZ_H
-#define GLOBALZ_H
+#ifndef DATABASE_H
+#define DATABASE_H
+
+#include "Globalz.H"
+
+#include <QFile>
+#include <QDebug>
+#include <QString>
+#include <QWidget>
+#include <QTextStream>
+#include <QStringList>
+#include <QTreeWidgetItem>
 
 
-typedef enum {
-    LOCUS_TYPE_UNDEFINED,
-    LOCUS_TYPE_HAPLOID,
-    LOCUS_TYPE_SEPARATED,
-    LOCUS_TYPE_2_COLUMN
-} LOCUS_TYPE;
+class DataBase
+{
+public:
+    DataBase();
+    ~DataBase();
+
+    DATA_TYPE dataType();
+    inline QWidget* getWidget() {return new QWidget(); }
+
+    void setLabel( QString value );
+    QString getLabel() const;
+
+    inline void setStackIndex(int val ) { m_stack_index = val; }
+    inline int getStackIndex() const { return m_stack_index; }
+
+    QTreeWidgetItem* getTreeWidget();
+
+    QStringList getWarnings();
+
+    inline int children() { return m_children.count(); }
 
 
-typedef enum {
-    COLUMN_TYPE_UNDEFINED,
-    COLUMN_TYPE_STRATUM,
-    COLUMN_TYPE_EXTERNAL,
-    COLUMN_TYPE_LOCUS
-} COLUMN_TYPE;
 
-typedef enum {
-    DATA_TYPE_UNDEFINED,
-    DATA_TYPE_GENOTYPES,
-    DATA_TYPE_RESULTS
-} DATA_TYPE;
+protected:
+    int m_stack_index;
+    DATA_TYPE m_type;
+    QString m_label;
+    QStringList m_warnings;
+    QTreeWidgetItem *m_treeWidgetItem;
 
-#endif // GLOBALZ_H
+    QList<DataBase*> m_children;
+
+
+};
+
+#endif // DATABASE_H
