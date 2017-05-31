@@ -34,6 +34,7 @@
 #include <QStackedWidget>
 #include <QAbstractItemModel>
 
+
 #include "DataGenotypes.H"
 
 class DataManager : public QObject
@@ -62,6 +63,7 @@ private:
     QStackedWidget *m_stackedWidget;
     QTreeWidget *m_treeWidget;
     QList<DataBase*> m_data;
+    gsl_rng *rng;
 
 
 };

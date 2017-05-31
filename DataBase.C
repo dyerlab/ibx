@@ -40,6 +40,14 @@ DataBase::~DataBase() {
     delete m_treeWidgetItem;
 }
 
+void DataBase::setLabel( QString label ) {
+    m_treeWidgetItem->setText(0,label);
+}
+
+void DataBase::setToolTip(QString label) {
+    m_treeWidgetItem->setToolTip(0, label );
+}
+
 DATA_TYPE DataBase::dataType(){
     return m_type;
 }

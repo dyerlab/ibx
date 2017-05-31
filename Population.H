@@ -28,9 +28,12 @@
 #ifndef POPULATION_H
 #define POPULATION_H
 
+
+#include <QStringList>
 #include <QObject>
 #include <QList>
 
+#include "Globalz.H"
 #include "Individual.H"
 
 class Population : public QObject
@@ -42,6 +45,7 @@ public:
     void append( Individual *theInd );
     Individual* get( int idx );
     int count() const;
+    QStringList keysForColumnType( COLUMN_TYPE type );
 
 signals:
 

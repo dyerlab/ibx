@@ -37,7 +37,10 @@ SOURCES += main.cpp \
     DataManager.C \
     DataGenotypes.C \
     DataBase.C \
-    DataResults.C
+    DataResults.C \
+    AnalysisBase.C \
+    DialogDoubleInput.C \
+    AnalysisAlleleFrequencies.C
 
 HEADERS  += \
     MainWindow.H \
@@ -54,7 +57,10 @@ HEADERS  += \
     DataManager.H \
     DataGenotypes.H \
     DataBase.H \
-    DataResults.H
+    DataResults.H \
+    AnalysisBase.H \
+    DialogDoubleInput.H \
+    AnalysisAlleleFrequencies.H
 
 FORMS    += \
     DialogImportGenotypes.ui
@@ -71,3 +77,9 @@ RESOURCES += \
 
 OTHER_FILES += \
     AppStyleSheet.css
+
+macx: LIBS += -L/usr/local/lib/ -lgsl -lgslcblas
+macx: INCLUDEPATH += /usr/local/include
+macx: DEPENDPATH += /usr/local/include
+macx: PRE_TARGETDEPS += /usr/local/lib/libgsl.a
+macx: PRE_TARGETDEPS += /usr/local/lib/libgslcblas.a

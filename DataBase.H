@@ -36,6 +36,7 @@
 #include <QWidget>
 #include <QTextStream>
 #include <QStringList>
+#include <QApplication>
 #include <QTreeWidgetItem>
 
 
@@ -44,6 +45,9 @@ class DataBase
 public:
     DataBase(QString label, DataBase *parent = 0 );
     ~DataBase();
+
+    void setLabel( QString label );
+    void setToolTip( QString label );
 
     DATA_TYPE dataType();
     inline QWidget* getWidget() {return new QWidget(); }

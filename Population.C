@@ -44,3 +44,20 @@ Individual* Population::get(int idx) {
 int Population::count() const {
     return m_individuals.count();
 }
+
+
+QStringList Population::keysForColumnType(COLUMN_TYPE type) {
+    QStringList ret;
+
+    if( count() ) {
+        QStringList keys = m_individuals.at(0)->keys();
+        foreach(QString key, keys){
+            if( m_individuals.at(0)->typeForKey(key) == type )
+                ret << key;
+        }
+    }
+
+    std::sort(ret.begin(),ret.end());
+
+    return ret;
+}

@@ -28,6 +28,7 @@
 #ifndef GLOBALZ_H
 #define GLOBALZ_H
 
+#include <gsl/gsl_rng.h>
 
 typedef enum {
     LOCUS_TYPE_UNDEFINED,
@@ -49,5 +50,10 @@ typedef enum {
     DATA_TYPE_GENOTYPES,
     DATA_TYPE_RESULTS
 } DATA_TYPE;
+
+
+
+static gsl_rng *rng;
+
 
 #endif // GLOBALZ_H

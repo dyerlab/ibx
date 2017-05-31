@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  ResultsText.H
+*  DialogDoubleInput.H
 *
 *  Created: 5 2017 by rodney
 *
@@ -25,44 +25,26 @@
 *
 ******************************************************************************/
 
-#ifndef RESULTSTEXT_H
-#define RESULTSTEXT_H
+#ifndef DIALOGDOUBLEINPUT_H
+#define DIALOGDOUBLEINPUT_H
 
-#include <QUrl>
-#include <QPair>
-#include <QList>
-#include <QString>
-#include <QTextEdit>
-#include <QTextDocument>
+#include <QObject>
+#include <QDialog>
+#include <QComboBox>
 
-#include "DataBase.H"
-
-class DataResults : public DataBase {
-
+class DialogDoubleInput : public QDialog
+{
+    Q_OBJECT
 public:
-    DataResults(QString label, DataBase *parent=0);
-    ~DataResults();
+    explicit DialogDoubleInput(QString title, QString msg1, QStringList items1, QString msg2, QStringList items2,  QWidget *parent  = 0);
 
-    inline QWidget* getWidget() { return m_textEdit; }
-    QTextDocument* getTextDocument();
+    inline int getFirstIndex()  { return m_box1->currentIndex(); }
+    inline int getSecondIndex()  { return m_box2->currentIndex(); }
 
-    void appendHeader( QString text );
-    void appendSubHeader( QString text );
-    void appendSubSubHeader( QString text );
-    void appendText( QString text );
-    void appendList( QStringList lines, bool isUnordered=true );
-    void appendTable( QString header, QList<QStringList> contents, QString colHeader, QString caption);
-    void addResource( int type, QUrl url, QVariant var );
-    void appendErrorMessage( QString msg );
-
-    void scrollToTop();
 
 private:
-
-    QTextEdit *m_textEdit;
-    QList< QPair<int, QUrl> > m_resources;
-
-
+    QComboBox *m_box1;
+    QComboBox *m_box2;
 };
 
-#endif // RESULTSTEXT_H
+#endif // DIALOGDOUBLEINPUT_H

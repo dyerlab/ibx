@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  ResultsText.H
+*  AnalysisBase.C
 *
 *  Created: 5 2017 by rodney
 *
@@ -25,44 +25,29 @@
 *
 ******************************************************************************/
 
-#ifndef RESULTSTEXT_H
-#define RESULTSTEXT_H
-
-#include <QUrl>
-#include <QPair>
-#include <QList>
-#include <QString>
-#include <QTextEdit>
-#include <QTextDocument>
-
-#include "DataBase.H"
-
-class DataResults : public DataBase {
-
-public:
-    DataResults(QString label, DataBase *parent=0);
-    ~DataResults();
-
-    inline QWidget* getWidget() { return m_textEdit; }
-    QTextDocument* getTextDocument();
-
-    void appendHeader( QString text );
-    void appendSubHeader( QString text );
-    void appendSubSubHeader( QString text );
-    void appendText( QString text );
-    void appendList( QStringList lines, bool isUnordered=true );
-    void appendTable( QString header, QList<QStringList> contents, QString colHeader, QString caption);
-    void addResource( int type, QUrl url, QVariant var );
-    void appendErrorMessage( QString msg );
-
-    void scrollToTop();
-
-private:
-
-    QTextEdit *m_textEdit;
-    QList< QPair<int, QUrl> > m_resources;
+#include "AnalysisBase.H"
+#include <QApplication>
+#include <QObject>
 
 
-};
 
-#endif // RESULTSTEXT_H
+AnalysisBase::AnalysisBase() {
+    m_results = new DataResults("Analysis Base");
+}
+
+void AnalysisBase::initProgress(QString msg, int min, int max){
+    m_progress = new QProgressDialog( msg, QObject::tr("Cancel"), min, max, qApp->activeWindow());
+    m_progress->setValue(min);
+    m_progress->show();
+    qApp->processEvents();
+}
+
+void AnalysisBase::finishProgress() {
+    m_progress->setValue( m_progress->maximum() );
+    m_progress->accept();
+    delete m_progress;
+}
+
+void AnalysisBase::setUpDoubleSelection(QString title, QString msg1, QStringList list1, QString msg2, QStringList list2 ) {
+    m_input_dlg = new DialogDoubleInput(title,msg1,list1,msg2,list2, qApp->activeWindow() );
+}

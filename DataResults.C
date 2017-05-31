@@ -130,4 +130,7 @@ void DataResults::addResource( int type, QUrl url, QVariant var ) {
 
 }
 
-
+void DataResults::scrollToTop() {
+    m_textEdit->moveCursor( QTextCursor::Start, QTextCursor::MoveAnchor );
+    qApp->processEvents();
+}

@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  ResultsText.H
+*  AnalysisBase.H
 *
 *  Created: 5 2017 by rodney
 *
@@ -25,44 +25,41 @@
 *
 ******************************************************************************/
 
-#ifndef RESULTSTEXT_H
-#define RESULTSTEXT_H
+#ifndef ANALYSISBASE_H
+#define ANALYSISBASE_H
 
-#include <QUrl>
-#include <QPair>
-#include <QList>
-#include <QString>
-#include <QTextEdit>
-#include <QTextDocument>
+#include "Globalz.H"
+#include "DataResults.H"
+#include "DialogDoubleInput.H"
 
-#include "DataBase.H"
+#include <QWidget>
+#include <QStringList>
+#include <QProgressDialog>
 
-class DataResults : public DataBase {
 
+class AnalysisBase
+{
 public:
-    DataResults(QString label, DataBase *parent=0);
-    ~DataResults();
+    AnalysisBase();
+    ~AnalysisBase() {;}
 
-    inline QWidget* getWidget() { return m_textEdit; }
-    QTextDocument* getTextDocument();
+    virtual void run() = 0;
 
-    void appendHeader( QString text );
-    void appendSubHeader( QString text );
-    void appendSubSubHeader( QString text );
-    void appendText( QString text );
-    void appendList( QStringList lines, bool isUnordered=true );
-    void appendTable( QString header, QList<QStringList> contents, QString colHeader, QString caption);
-    void addResource( int type, QUrl url, QVariant var );
-    void appendErrorMessage( QString msg );
+    void initProgress( QString msg, int min, int max);
+    void finishProgress();
 
-    void scrollToTop();
+    inline QStringList getWarnings() { return m_warnings; }
+    inline DataResults* getResults() { return m_results; }
 
-private:
+    void setUpDoubleSelection(QString title, QString msg1, QStringList list1, QString msg2, QStringList list2 );
 
-    QTextEdit *m_textEdit;
-    QList< QPair<int, QUrl> > m_resources;
+protected:
+    DataResults *m_results;
+    QStringList m_warnings;
+    QProgressDialog *m_progress;
+    QDialog *m_input_dlg;
 
 
 };
 
-#endif // RESULTSTEXT_H
+#endif // ANALYSISBASE_H

@@ -6,7 +6,7 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  ResultsText.H
+*  AnalysisAlleleFrequencies.C
 *
 *  Created: 5 2017 by rodney
 *
@@ -25,44 +25,31 @@
 *
 ******************************************************************************/
 
-#ifndef RESULTSTEXT_H
-#define RESULTSTEXT_H
+#include "AnalysisAlleleFrequencies.H"
 
-#include <QUrl>
-#include <QPair>
-#include <QList>
-#include <QString>
-#include <QTextEdit>
-#include <QTextDocument>
+AnalysisAlleleFrequencies::AnalysisAlleleFrequencies(DataGenotypes *theData) : AnalysisBase() {
+     m_pop = theData->getPopulation();
+     if( !m_pop )
+         qCritical() << "HELP, population is nill in AlleleFrequencies";
 
-#include "DataBase.H"
-
-class DataResults : public DataBase {
-
-public:
-    DataResults(QString label, DataBase *parent=0);
-    ~DataResults();
-
-    inline QWidget* getWidget() { return m_textEdit; }
-    QTextDocument* getTextDocument();
-
-    void appendHeader( QString text );
-    void appendSubHeader( QString text );
-    void appendSubSubHeader( QString text );
-    void appendText( QString text );
-    void appendList( QStringList lines, bool isUnordered=true );
-    void appendTable( QString header, QList<QStringList> contents, QString colHeader, QString caption);
-    void addResource( int type, QUrl url, QVariant var );
-    void appendErrorMessage( QString msg );
-
-    void scrollToTop();
-
-private:
-
-    QTextEdit *m_textEdit;
-    QList< QPair<int, QUrl> > m_resources;
+    QStringList strata = m_pop->keysForColumnType( COLUMN_TYPE_STRATUM );
+    QStringList loci = m_pop->keysForColumnType( COLUMN_TYPE_LOCUS );
+    m_results->setLabel( "Allele Frequencies" );
 
 
-};
+    if( !loci.count() ) {
+        m_warnings << QObject::tr("You need to have some loci in the dataset before you can estiamte allele frequencies.");
+        m_pop = NULL;
+    }
 
-#endif // RESULTSTEXT_H
+}
+
+void AnalysisAlleleFrequencies::run() {
+
+    if( !m_pop ){
+        m_results->appendErrorMessage( m_warnings.join("\n"));
+        return;
+    }
+
+
+}

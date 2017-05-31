@@ -38,6 +38,7 @@
 #include <QDebug>
 #include <QLabel>
 #include <QMenu>
+#include <ctime>
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
@@ -45,6 +46,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     makeActions();
     makeMenus();
     loadSettings();
+
+    // Set up the global random number generator
+    if( rng == NULL ) {
+        const gsl_rng_type *T;
+        gsl_rng_env_setup();
+        T = gsl_rng_default;
+        rng = gsl_rng_alloc( T );
+        gsl_rng_set( rng, time(NULL) );
+    }
+
+
 
 }
 
@@ -94,9 +106,8 @@ void MainWindow::makeActions() {
     connect( quitAction, SIGNAL( triggered() ),
              qApp, SLOT( closeAllWindows() ) );
 
-
     nextDataAction = new QAction(tr("Next"), this);
-    prevDataAction = new QAxtion(tr("Previsou"), this);
+    prevDataAction = new QAction(tr("Previsou"), this);
 
     alleleFrequencyAction = new QAction( tr("Allele Frequencies"), this);
     alleleFrequencyAction->setShortcut(tr("CTRL+F"));
