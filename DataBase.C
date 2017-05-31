@@ -26,13 +26,17 @@
 ******************************************************************************/
 
 #include "DataBase.H"
+#include <QTreeWidgetItem>
 
-DataBase::DataBase() {
+DataBase::DataBase(QString label, DataBase *parent) {
+    m_parent = parent;
+    m_label = label;
     m_type = DATA_TYPE_UNDEFINED;
-    m_treeWidgetItem = new QTreeWidgetItem();
+    m_treeWidgetItem = new QTreeWidgetItem(QStringList(m_label));
 }
 
 DataBase::~DataBase() {
+    qDeleteAll( m_children );
     delete m_treeWidgetItem;
 }
 
@@ -40,19 +44,22 @@ DATA_TYPE DataBase::dataType(){
     return m_type;
 }
 
-void DataBase::setLabel( QString value ) {
-    m_label = value;
-    m_treeWidgetItem->setText(0,m_label);
-}
-
-QString DataBase::getLabel() const {
-    return m_label;
-}
-
-QTreeWidgetItem* DataBase::getTreeWidget() {
-    return m_treeWidgetItem;
-}
-
 QStringList DataBase::getWarnings() {
     return m_warnings;
 }
+
+
+/*******************   Tree View Overrides ************/
+
+void DataBase::appendChild(DataBase *child) {
+    child->m_parent = this;
+    m_treeWidgetItem->addChild( child->m_treeWidgetItem );
+    m_children.append(child);
+}
+
+
+
+DataBase* DataBase::child( int idx ){
+    return m_children.value(idx);
+}
+

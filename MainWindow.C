@@ -55,12 +55,11 @@ MainWindow::~MainWindow() {
 void MainWindow::makeUI() {
     mainSplitter = new QSplitter();
 
-    treeView = new QTreeView();
-    treeView->setAlternatingRowColors(true);
-    treeView->sizePolicy().setHorizontalStretch(0);
-    treeView->setContextMenuPolicy( Qt::ActionsContextMenu );
-    treeView->setSelectionMode( QAbstractItemView::SingleSelection );
-
+    treeWidget = new QTreeWidget();
+    treeWidget->setAlternatingRowColors(true);
+    treeWidget->sizePolicy().setHorizontalStretch(0);
+    treeWidget->setContextMenuPolicy( Qt::ActionsContextMenu );
+    treeWidget->setSelectionMode( QAbstractItemView::SingleSelection );
 
     stackedWidget = new QStackedWidget();
 
@@ -71,16 +70,17 @@ void MainWindow::makeUI() {
     QPixmap logo( QString(":/media/characteristic_model.png"));
     label->setPixmap( logo );
     stackedWidget->addWidget(label);
+    connect( stackedWidget, SIGNAL(currentChanged(int)), this, SLOT(slotStackedWidgetChanged(int)));
 
-    mainSplitter->addWidget(treeView);
+
+    mainSplitter->addWidget(treeWidget);
     mainSplitter->addWidget(stackedWidget);
     mainSplitter->setStretchFactor(0,0);
     mainSplitter->setStretchFactor(1,1);
     setCentralWidget(mainSplitter);
 
-
     // Make the data
-    theData = new DataManager(stackedWidget,treeView );
+    theData = new DataManager(stackedWidget,treeWidget );
 }
 
 void MainWindow::makeActions() {
@@ -94,6 +94,14 @@ void MainWindow::makeActions() {
     connect( quitAction, SIGNAL( triggered() ),
              qApp, SLOT( closeAllWindows() ) );
 
+
+    nextDataAction = new QAction(tr("Next"), this);
+    prevDataAction = new QAxtion(tr("Previsou"), this);
+
+    alleleFrequencyAction = new QAction( tr("Allele Frequencies"), this);
+    alleleFrequencyAction->setShortcut(tr("CTRL+F"));
+
+
 }
 
 void MainWindow::makeMenus() {
@@ -101,6 +109,13 @@ void MainWindow::makeMenus() {
     file->addAction( importGeneticDataAction );
     file->addSeparator();
     file->addAction( quitAction );
+
+    QMenu *view = this->menuBar()->addMenu( tr("&View"));
+    view->addAction( nextDataAction );
+    view->addAction( prevDataAction );
+
+    QMenu *analyses = this->menuBar()->addMenu(tr("&Analyses"));
+    analyses->addAction( alleleFrequencyAction );
 
 }
 
@@ -126,10 +141,29 @@ void MainWindow::saveSettings() {
 
 
 
+/******************************************************************
+ *                                                                *
+ *                         SIGNALS & SLOTS                        *
+ *                                                                *
+ ******************************************************************/
 
 void MainWindow::slotImportGenotypes(){
     theData->importGenotypes();
+}
+
+
+void MainWindow::slotStackedWidgetChanged(int) {
+    DATA_TYPE type = theData->topLevelItem()->dataType();
+
+
+    if( type == DATA_TYPE_GENOTYPES ){
+
+    }
+
+
+    else if( type == DATA_TYPE_RESULTS ){
+
+    }
 
 
 }
-

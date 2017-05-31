@@ -27,7 +27,7 @@
 
 #include "DataGenotypes.H"
 
-DataGenotypes::DataGenotypes() : DataBase() {
+DataGenotypes::DataGenotypes(QString label, DataBase *parent) : DataBase(label,parent) {
     m_type = DATA_TYPE_GENOTYPES;
 }
 
@@ -48,6 +48,3 @@ Population* DataGenotypes::getPopulation() {
     return m_population;
 }
 
-GenotypeTableModel* DataGenotypes::getGenotypeTableModel() const {
-    return m_genotypeTableModel;
-}

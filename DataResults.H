@@ -40,7 +40,7 @@
 class DataResults : public DataBase {
 
 public:
-    DataResults();
+    DataResults(QString label, DataBase *parent=0);
     ~DataResults();
 
     inline QWidget* getWidget() { return m_textEdit; }

@@ -31,15 +31,29 @@
 #include "DialogImportGenotypes.H"
 
 #include <QFileDialog>
+#include <QHeaderView>
 #include <QMessageBox>
+#include <QStandardItem>
 
-DataManager::DataManager(QStackedWidget *stackedWidget, QTreeView *listWidget, QObject *parent) : QObject(parent) {
+DataManager::DataManager(QStackedWidget *stackedWidget, QTreeWidget *listWidget, QObject *parent) : QObject(parent) {
     m_stackedWidget = stackedWidget;
-    m_treeView = listWidget;
+    m_treeWidget = listWidget;
+    m_treeWidget->setColumnCount(1);
+
+    m_treeWidget->headerItem()->setText(0,tr("Data"));
+
+    connect( m_treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*,int)),
+             this, SLOT(slotChangeStackedWidget(QTreeWidgetItem*,int)));
 }
 
 DataManager::~DataManager() {
 
+}
+
+
+DataBase* DataManager::topLevelItem(){
+    int idx = m_stackedWidget->currentIndex();
+    return( m_data.value( --idx ) );
 }
 
 
@@ -103,15 +117,45 @@ void DataManager::importGenotypes() {
     qDebug() << "Loaded " << thePop->count() << " individuals";
 
     if( thePop->count() && thePop->get(0)->numLoci() ) {
-        m_genotypes = new DataGenotypes();
+        DataGenotypes *m_genotypes = new DataGenotypes("Genotypes");
         m_genotypes->setPopulation( thePop );
         int idx = m_stackedWidget->addWidget( m_genotypes->getWidget());
         m_genotypes->setStackIndex( idx );
-        m_stackedWidget->setCurrentIndex(idx);
-        m_genotypes->getWidget()->update();
+        m_treeWidget->addTopLevelItem( m_genotypes->treeWidgetItem() );
+        m_treeWidget->update();
+        m_data.append( m_genotypes );
+        slotChangeStackedWidget(m_genotypes->treeWidgetItem(), 0);
+
     }
     else
         delete( thePop );
 
-
 }
+
+
+
+void DataManager::slotChangeStackedWidget(QTreeWidgetItem* item ,int column) {
+
+    Q_UNUSED(column);
+
+    foreach( DataBase *entry, m_data ){
+        if( entry->treeWidgetItem() == item ){
+            int idx = entry->getStackIndex();
+            m_stackedWidget->setCurrentIndex(idx);
+            return;
+        }
+    }
+
+    qDebug() << "You should never actually get to this point.";
+}
+
+
+
+
+
+
+
+
+
+
+

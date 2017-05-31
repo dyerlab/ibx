@@ -29,9 +29,10 @@
 #define DATAMANAGER_H
 
 #include <QObject>
-#include <QTreeView>
+#include <QTreeWidget>
 #include <QApplication>
 #include <QStackedWidget>
+#include <QAbstractItemModel>
 
 #include "DataGenotypes.H"
 
@@ -39,16 +40,29 @@ class DataManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit DataManager(QStackedWidget *stackedWidget, QTreeView *listWidget, QObject *parent = 0);
+    explicit DataManager(QStackedWidget *stackedWidget, QTreeWidget *listWidget, QObject *parent = 0);
     ~DataManager();
 
+    // Actions to import
     void importGenotypes();
 
 
+    // Actions for anlayses
+    void runAlleleFrequencies();
+
+
+    DataBase* topLevelItem();
+
+
+public slots:
+    void slotChangeStackedWidget(QTreeWidgetItem* item ,int column);
+
 private:
-    DataGenotypes *m_genotypes;
+
     QStackedWidget *m_stackedWidget;
-    QTreeView *m_treeView;
+    QTreeWidget *m_treeWidget;
+    QList<DataBase*> m_data;
+
 
 };
 

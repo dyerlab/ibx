@@ -36,7 +36,7 @@
 class DataGenotypes : public DataBase {
 
 public:
-    DataGenotypes();
+    DataGenotypes(QString label, DataBase *parent = 0);
     ~DataGenotypes();
 
     void setPopulation( Population *thePop );
@@ -44,7 +44,6 @@ public:
 
     inline QWidget* getWidget() { return m_tableView; }
 
-    GenotypeTableModel* getGenotypeTableModel() const;
 
 
 private:

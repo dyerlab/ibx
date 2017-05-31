@@ -42,34 +42,36 @@
 class DataBase
 {
 public:
-    DataBase();
+    DataBase(QString label, DataBase *parent = 0 );
     ~DataBase();
 
     DATA_TYPE dataType();
     inline QWidget* getWidget() {return new QWidget(); }
-
-    void setLabel( QString value );
-    QString getLabel() const;
-
     inline void setStackIndex(int val ) { m_stack_index = val; }
     inline int getStackIndex() const { return m_stack_index; }
 
-    QTreeWidgetItem* getTreeWidget();
-
     QStringList getWarnings();
 
-    inline int children() { return m_children.count(); }
-
+    // overrides for tree item
+    void appendChild( DataBase *child );
+    DataBase* child( int idx );
+    inline int childCount() const               { return m_children.count(); }
+    inline QTreeWidgetItem* treeWidgetItem()    {return m_treeWidgetItem; }
 
 
 protected:
+    DataBase *m_parent;
+    QList<DataBase*> m_children;
+    QTreeWidgetItem *m_treeWidgetItem;
+
     int m_stack_index;
     DATA_TYPE m_type;
     QString m_label;
     QStringList m_warnings;
-    QTreeWidgetItem *m_treeWidgetItem;
 
-    QList<DataBase*> m_children;
+
+    void setParent( DataBase *parent );
+
 
 
 };

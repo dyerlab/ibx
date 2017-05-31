@@ -27,7 +27,7 @@
 
 #include "DataResults.H"
 
-DataResults::DataResults() : DataBase() {
+DataResults::DataResults(QString label, DataBase *parent) : DataBase(label,parent) {
     m_type = DATA_TYPE_RESULTS;
     m_textEdit = new QTextEdit();
     m_textEdit->setReadOnly( true );
