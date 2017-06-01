@@ -92,6 +92,35 @@ void DataResults::appendList( QStringList lines, bool isUnordered ) {
     m_textEdit->document()->setHtml( current + "<p></p>");
 }
 
+void DataResults::appendTable( QString caption, gsl_matrix *content, QStringList rowHeaders, QStringList colHeaders ){
+    QString doc = m_textEdit->document()->toHtml();
+
+    doc += QString("<table>\n");
+    if( !caption.isEmpty() )
+        doc += QString("<caption>%1</caption>").arg(caption);
+    if( colHeaders.count()){
+        doc += QString("<tr>");
+        if( rowHeaders.count())
+            doc += QString("<th>&nbsp;</th>");
+        foreach(QString hdr, colHeaders )
+            doc += QString("<th>%1</th>").arg(hdr);
+        doc += QString("</tr>");
+    }
+
+    for(size_t i=0; i<content->size1;i++){
+        doc += QString("<tr>");
+        if( rowHeaders.count())
+            doc += QString("<th>%1</th>").arg(rowHeaders.at(i));
+
+        for( size_t j=0;j<content->size2;j++){
+            doc += QString("<td>%1</td>").arg(gsl_matrix_get(content,i,j));
+        }
+        doc += QString("</tr>");
+    }
+
+    doc += QString("</table>");
+    m_textEdit->document()->setHtml( doc );
+}
 
 void DataResults::appendTable( QString header, QList<QStringList> contents, QString colHeader, QString caption) {
     QString doc = m_textEdit->document()->toHtml();
@@ -103,7 +132,7 @@ void DataResults::appendTable( QString header, QList<QStringList> contents, QStr
     if( caption.count() )
         doc += QString("<p>%1</p>").arg(caption);
 
-    doc += QString("<table cellspacing=2 cellpadding=2>\n");
+    doc += QString("<table>\n");
 
     if( !colHeader.isEmpty() && numCols > 1 )
         doc += QString("<tr><td></td><td align=\"center\" colspan=%1>%2</td></tr>").arg(numCols-1).arg(colHeader);

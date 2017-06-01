@@ -111,7 +111,8 @@ void MainWindow::makeActions() {
 
     alleleFrequencyAction = new QAction( tr("Allele Frequencies"), this);
     alleleFrequencyAction->setShortcut(tr("CTRL+F"));
-
+    connect( alleleFrequencyAction, SIGNAL(triggered(bool)),
+             theData, SLOT(slotRunAlleleFrequencies()));
 
 }
 

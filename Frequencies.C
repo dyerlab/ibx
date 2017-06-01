@@ -52,7 +52,10 @@ void Frequencies::addLocus(Locus *theLoc) {
 
 double Frequencies::frequency(QString allele) {
     double ct = m_counts.keys().contains(allele) ? m_counts.value(allele) : 0.0;
-    return ct / m_N;
+    if( m_N )
+        return ct / m_N;
+    else
+        return 0.0;
 }
 
 
@@ -72,6 +75,17 @@ gsl_vector* Frequencies::toVector(QStringList alleles) {
 
     return v;
 }
+
+QList<double> Frequencies::toList( QStringList alleles ) {
+    QList<double> ret;
+    if(!alleles.count())
+        alleles = this->alleles();
+    foreach(QString allele, alleles)
+        ret.append( frequency(allele) );
+
+    return ret;
+}
+
 
 QString Frequencies::toString() {
     QString ret = "Frequencies = { ";

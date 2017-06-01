@@ -48,15 +48,13 @@ public:
     void importGenotypes();
 
 
-    // Actions for anlayses
-    void runAlleleFrequencies();
-
-
     DataBase* topLevelItem();
 
 
 public slots:
     void slotChangeStackedWidget(QTreeWidgetItem* item ,int column);
+    void slotRunAlleleFrequencies();
+
 
 private:
 

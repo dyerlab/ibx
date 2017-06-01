@@ -38,7 +38,7 @@ public:
     AnalysisAlleleFrequencies( DataGenotypes *theData );
     ~AnalysisAlleleFrequencies();
 
-    void run();
+    bool run();
 
 private:
     Population *m_pop;

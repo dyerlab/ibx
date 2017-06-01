@@ -28,7 +28,10 @@
 #include "FileIO.H"
 #include "Globalz.H"
 #include "DataManager.H"
+#include "DataGenotypes.H"
 #include "DialogImportGenotypes.H"
+
+#include "AnalysisAlleleFrequencies.H"
 
 #include <QFileDialog>
 #include <QHeaderView>
@@ -55,6 +58,29 @@ DataBase* DataManager::topLevelItem(){
     int idx = m_stackedWidget->currentIndex();
     return( m_data.value( --idx ) );
 }
+
+
+
+void DataManager::slotRunAlleleFrequencies(){
+    qDebug() << "running allele frquencies";
+    if( topLevelItem()->dataType() != DATA_TYPE_GENOTYPES )
+        return;
+    DataBase *raw = topLevelItem();
+    DataGenotypes *data = static_cast<DataGenotypes*>(raw);
+
+    AnalysisAlleleFrequencies *analysis = new AnalysisAlleleFrequencies(data);
+    if( analysis->run() ){
+        DataResults *results = analysis->getResults();
+        data->appendChild( results );
+        int idx = m_stackedWidget->addWidget( results->getWidget() );
+        results->setStackIndex(idx);
+        m_data.append( results );
+        slotChangeStackedWidget(results->treeWidgetItem(),0);
+    }
+
+    delete( analysis);
+}
+
 
 
 void DataManager::importGenotypes() {
@@ -131,6 +157,31 @@ void DataManager::importGenotypes() {
         delete( thePop );
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

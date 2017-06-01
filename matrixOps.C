@@ -6,9 +6,9 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  AnalysisBase.H
+*  matrixOps
 *
-*  Created: 5 2017 by rodney
+*  Created: 6 2017 by rodney
 *
 *  Copyright 2017 rodney.  All Rights Reserved.
 *
@@ -25,41 +25,23 @@
 *
 ******************************************************************************/
 
-#ifndef ANALYSISBASE_H
-#define ANALYSISBASE_H
+#include "matrixOps.H"
 
-#include "Globalz.H"
-#include "DataResults.H"
-#include "DialogDoubleInput.H"
+gsl_matrix* frequencyMatrix( QList<Frequencies*> freqs ) {
+    QStringList alleles;
+    foreach(Frequencies *f, freqs)
+        alleles.append( f->alleles() );
+    alleles = alleles.toSet().toList();
+    std::sort(alleles.begin(),alleles.end());
 
-#include <QWidget>
-#include <QStringList>
-#include <QProgressDialog>
+    gsl_matrix* m = gsl_matrix_calloc(freqs.count(),alleles.count());
 
+    for(int i=0;i<freqs.count();i++){
+        gsl_vector *v = freqs.at(i)->toVector(alleles);
+        for(size_t j=0;j<v->size;j++)
+            gsl_matrix_set(m,i,j, gsl_vector_get(v,j));
+    }
 
-class AnalysisBase
-{
-public:
-    AnalysisBase();
-    ~AnalysisBase() {;}
+    return m;
+}
 
-    virtual bool run() = 0;
-
-    void initProgress( QString msg, int min, int max);
-    void finishProgress();
-
-    inline QStringList getWarnings() { return m_warnings; }
-    inline DataResults* getResults() { return m_results; }
-
-    void setUpDoubleSelection(QString title, QString msg1, QStringList list1, QString msg2, QStringList list2 );
-
-protected:
-    DataResults *m_results;
-    QStringList m_warnings;
-    QProgressDialog *m_progress;
-    QDialog *m_input_dlg;
-
-
-};
-
-#endif // ANALYSISBASE_H

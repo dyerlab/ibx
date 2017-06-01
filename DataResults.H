@@ -52,6 +52,7 @@ public:
     void appendText( QString text );
     void appendList( QStringList lines, bool isUnordered=true );
     void appendTable( QString header, QList<QStringList> contents, QString colHeader, QString caption);
+    void appendTable( QString caption, gsl_matrix *content, QStringList rowHeaders, QStringList colHeaders );
     void addResource( int type, QUrl url, QVariant var );
     void appendErrorMessage( QString msg );
 

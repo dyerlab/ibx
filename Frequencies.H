@@ -47,6 +47,7 @@ public:
 
     QString toString();
     gsl_vector* toVector( QStringList alleles = QStringList());
+    QList<double> toList( QStringList alleles = QStringList());
     QStringList alleles();
 
     double He();
@@ -60,5 +61,6 @@ private:
     QHash<QString,double> m_counts;
 
 };
+
 
 #endif // FREQUENCIES_H

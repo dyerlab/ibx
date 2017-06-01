@@ -6,9 +6,9 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  AnalysisBase.H
+*  matrixOps
 *
-*  Created: 5 2017 by rodney
+*  Created: 6 2017 by rodney
 *
 *  Copyright 2017 rodney.  All Rights Reserved.
 *
@@ -25,41 +25,18 @@
 *
 ******************************************************************************/
 
-#ifndef ANALYSISBASE_H
-#define ANALYSISBASE_H
+#ifndef MATRIXOPS_H
+#define MATRIXOPS_H
 
-#include "Globalz.H"
-#include "DataResults.H"
-#include "DialogDoubleInput.H"
-
-#include <QWidget>
+#include <gsl/gsl_vector.h>
+#include <gsl/gsl_matrix.h>
+#include "Frequencies.H"
 #include <QStringList>
-#include <QProgressDialog>
+#include <QList>
 
 
-class AnalysisBase
-{
-public:
-    AnalysisBase();
-    ~AnalysisBase() {;}
-
-    virtual bool run() = 0;
-
-    void initProgress( QString msg, int min, int max);
-    void finishProgress();
-
-    inline QStringList getWarnings() { return m_warnings; }
-    inline DataResults* getResults() { return m_results; }
-
-    void setUpDoubleSelection(QString title, QString msg1, QStringList list1, QString msg2, QStringList list2 );
-
-protected:
-    DataResults *m_results;
-    QStringList m_warnings;
-    QProgressDialog *m_progress;
-    QDialog *m_input_dlg;
+gsl_matrix* frequencyMatrix( QList<Frequencies*> freqs );
 
 
-};
 
-#endif // ANALYSISBASE_H
+#endif // MATRIXOPS_H

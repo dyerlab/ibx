@@ -41,7 +41,8 @@ SOURCES += main.cpp \
     AnalysisBase.C \
     DialogDoubleInput.C \
     AnalysisAlleleFrequencies.C \
-    Frequencies.C
+    Frequencies.C \
+    matrixOps.C
 
 HEADERS  += \
     MainWindow.H \
@@ -62,7 +63,8 @@ HEADERS  += \
     AnalysisBase.H \
     DialogDoubleInput.H \
     AnalysisAlleleFrequencies.H \
-    Frequencies.H
+    Frequencies.H \
+    matrixOps.H
 
 FORMS    += \
     DialogImportGenotypes.ui
