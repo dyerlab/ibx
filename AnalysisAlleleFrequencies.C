@@ -32,24 +32,40 @@ AnalysisAlleleFrequencies::AnalysisAlleleFrequencies(DataGenotypes *theData) : A
      if( !m_pop )
          qCritical() << "HELP, population is nill in AlleleFrequencies";
 
-    QStringList strata = m_pop->keysForColumnType( COLUMN_TYPE_STRATUM );
-    QStringList loci = m_pop->keysForColumnType( COLUMN_TYPE_LOCUS );
+
     m_results->setLabel( "Allele Frequencies" );
 
+
+
+
+}
+
+void AnalysisAlleleFrequencies::run() {
+    QStringList strata = m_pop->keysForColumnType( COLUMN_TYPE_STRATUM );
+    strata.push_front( QObject::tr("All"));
+    QStringList loci = m_pop->keysForColumnType( COLUMN_TYPE_LOCUS );
+    loci.push_front( QObject::tr("All"));
+    QString title = "Allele Frequenices";
+    QString msg1 = "Strata:";
+    QString msg2 = "Loci:";
 
     if( !loci.count() ) {
         m_warnings << QObject::tr("You need to have some loci in the dataset before you can estiamte allele frequencies.");
         m_pop = NULL;
     }
 
-}
-
-void AnalysisAlleleFrequencies::run() {
-
     if( !m_pop ){
         m_results->appendErrorMessage( m_warnings.join("\n"));
         return;
     }
+
+    setUpDoubleSelection(title, msg1, strata, msg2, loci );
+    if( m_input_dlg->exec() == QDialog::Rejected )
+        return;
+    DialogDoubleInput *dlg = static_cast<DialogDoubleInput*>(m_input_dlg);
+    QString lvl_strata = strata.at( dlg->getFirstIndex() );
+    QString lvl_loci = loci.at( dlg->getSecondIndex() );
+
 
 
 }

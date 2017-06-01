@@ -61,3 +61,16 @@ QStringList Population::keysForColumnType(COLUMN_TYPE type) {
 
     return ret;
 }
+
+
+QHash<QString,Population*> Population::partition( QString stratum ) {
+    QHash<QString, Population*> ret;
+
+    foreach( Individual *ind, m_individuals ){
+        QString strata = ind->getData( stratum ).toString();
+        if( !ret.keys().contains(strata) )
+            ret.insert(strata, new Population() );
+        ret.value(strata)->append( ind );
+    }
+    return ret;
+}

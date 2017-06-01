@@ -6,9 +6,9 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  TableItemDelegate.C
+*  Frequencies.H
 *
-*  Created: 5 2017 by rodney
+*  Created: 6 2017 by rodney
 *
 *  Copyright 2017 rodney.  All Rights Reserved.
 *
@@ -25,27 +25,40 @@
 *
 ******************************************************************************/
 
-#ifndef TABLE_ITEM_DELEGATE_H_
-#define TABLE_ITEM_DELEGATE_H_
 
+#ifndef FREQUENCIES_H
+#define FREQUENCIES_H
 
-#include <QItemDelegate>
-#include <QLineEdit>
-#include <QWidget>
+#include "Locus.H"
+#include <QHash>
+#include <QString>
+#include <QStringList>
 
-class TableItemDelegate : public QItemDelegate 
+#include <gsl/gsl_vector.h>
+
+class Frequencies
 {
-	Q_OBJECT
-
 public:
-	TableItemDelegate( QObject *parent=0 );
-	
-	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-	void setEditorData(QWidget *editor, const QModelIndex &index) const;
-	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
-	void updateEditorGeometry(QWidget *editor,const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    Frequencies();
+
+    void addLocus(Locus *theLoc );
+
+    double frequency( QString allele );
+
+    QString toString();
+    gsl_vector* toVector( QStringList alleles = QStringList());
+    QStringList alleles();
+
+    double He();
+    double Ho();
+
+private:
+
+    double m_N;
+    double m_Ho;
+    double m_NHo;
+    QHash<QString,double> m_counts;
+
 };
 
-#endif
-
-
+#endif // FREQUENCIES_H

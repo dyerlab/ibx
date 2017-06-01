@@ -30,8 +30,10 @@
 
 
 #include <QStringList>
+#include <QString>
 #include <QObject>
 #include <QList>
+#include <QHash>
 
 #include "Globalz.H"
 #include "Individual.H"
@@ -46,10 +48,8 @@ public:
     Individual* get( int idx );
     int count() const;
     QStringList keysForColumnType( COLUMN_TYPE type );
+    QHash<QString,Population*> partition( QString stratum );
 
-signals:
-
-public slots:
 
 
 private:
