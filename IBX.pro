@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui webenginewidgets
+QT       += core gui webenginewidgets charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -42,7 +42,16 @@ SOURCES += main.cpp \
     DialogDoubleInput.C \
     AnalysisAlleleFrequencies.C \
     Frequencies.C \
-    matrixOps.C
+    matrixOps.C \
+    Edge.C \
+    Graph.C \
+    GraphicItem.C \
+    GraphOps.C \
+    GraphScene.C \
+    GraphView.C \
+    GraphWidget.C \
+    Node.C \
+    Charts.C
 
 HEADERS  += \
     MainWindow.H \
@@ -64,7 +73,16 @@ HEADERS  += \
     DialogDoubleInput.H \
     AnalysisAlleleFrequencies.H \
     Frequencies.H \
-    matrixOps.H
+    matrixOps.H \
+    Edge.H \
+    Graph.H \
+    GraphicItem.H \
+    GraphOps.H \
+    GraphScene.H \
+    GraphView.H \
+    GraphWidget.H \
+    Node.H \
+    Charts.H
 
 FORMS    += \
     DialogImportGenotypes.ui
