@@ -52,34 +52,24 @@ signals:
 public slots:
 
     void slotDoNextAction();
-
     void slotImportGenotypes();
     void slotStackedWidgetChanged(int);
 
 private:
 
-
   DataManager *theData;
-
   QSplitter *mainSplitter;
-
   QTreeWidget *treeWidget;
-
   QStackedWidget *stackedWidget;
   QTableView *tableView;
 
   QAction *quitAction;
   QAction *importGeneticDataAction;
   QAction *importGraphDataAction;
-
   QAction *nextDataAction;
   QAction *prevDataAction;
-
   QAction *alleleFrequencyAction;
-
-
   QAction *nextActionAction;
-
 
   void makeUI();
   void makeActions();

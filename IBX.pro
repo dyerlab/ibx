@@ -52,7 +52,8 @@ SOURCES += main.cpp \
     GraphWidget.C \
     Node.C \
     Charts.C \
-    DataNetwork.C
+    DataNetwork.C \
+    ibxmainwindow.cpp
 
 HEADERS  += \
     MainWindow.H \
@@ -84,10 +85,12 @@ HEADERS  += \
     GraphWidget.H \
     Node.H \
     Charts.H \
-    DataNetwork.H
+    DataNetwork.H \
+    ibxmainwindow.h
 
 FORMS    += \
-    DialogImportGenotypes.ui
+    DialogImportGenotypes.ui \
+    ibxmainwindow.ui
 
 DISTFILES += \
     media/characteristic_model.png \
