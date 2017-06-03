@@ -101,6 +101,14 @@ void MainWindow::makeActions() {
     connect( importGeneticDataAction, SIGNAL(triggered(bool)),
              this, SLOT(slotImportGenotypes()));
 
+    importGraphDataAction = new QAction( tr("Graph"), this );
+    importGraphDataAction->setShortcut(tr("CTRL+G"));
+    connect( importGraphDataAction, SIGNAL(triggered(bool)), this, SLOT(slotDoNextAction()));
+
+    nextActionAction = new QAction( tr("Next Action"), this );
+    nextActionAction->setShortcut(tr("CTRL+N"));
+    connect(nextActionAction, SIGNAL(triggered(bool)), this, SLOT(slotDoNextAction()));
+
     quitAction = new QAction( tr("&Quit"), this );
     quitAction->setShortcut(tr("CTRL+Q"));
     connect( quitAction, SIGNAL( triggered() ),
@@ -118,7 +126,11 @@ void MainWindow::makeActions() {
 
 void MainWindow::makeMenus() {
     QMenu *file = this->menuBar()->addMenu(tr("&File"));
-    file->addAction( importGeneticDataAction );
+
+    QMenu *importMenu = file->addMenu("&Import");
+    importMenu->addAction( importGeneticDataAction );
+    importMenu->addAction( importGraphDataAction );
+
     file->addSeparator();
     file->addAction( quitAction );
 
@@ -163,6 +175,10 @@ void MainWindow::slotImportGenotypes(){
     theData->importGenotypes();
 }
 
+
+void MainWindow::slotDoNextAction() {
+    theData->importGraph();
+}
 
 void MainWindow::slotStackedWidgetChanged(int) {
     DATA_TYPE type = theData->topLevelItem()->dataType();

@@ -46,6 +46,7 @@ public:
 
     // Actions to import
     void importGenotypes();
+    void importGraph();
 
 
     DataBase* topLevelItem();
@@ -54,6 +55,8 @@ public:
 public slots:
     void slotChangeStackedWidget(QTreeWidgetItem* item ,int column);
     void slotRunAlleleFrequencies();
+
+    void slotMakeNextThing();
 
 
 private:

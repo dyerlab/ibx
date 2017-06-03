@@ -6,9 +6,9 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  chartops
+*  DataNetwork.C
 *
-*  Created: 4 2017 by rodney
+*  Created: 6 2017 by rodney
 *
 *  Copyright 2017 rodney.  All Rights Reserved.
 *
@@ -25,21 +25,27 @@
 *
 ******************************************************************************/
 
-#ifndef CHARTOPS_H
-#define CHARTOPS_H
+#include "DataNetwork.H"
+
+DataNetwork::DataNetwork(bool asLopho) : DataBase("Graph") {
+
+    if( asLopho )
+        m_graph = createLopho();
+    else
+        m_graph = new Graph();
+
+    m_graphWidget = new GraphWidget();
+    m_graphWidget->setGraph( m_graph );
+
+    m_type = DATA_TYPE_NETWORK;
 
 
-#include <gsl/gsl_vector.h>
-#include <gsl/gsl_histogram.h>
 
-#include <QtCharts>
-#include <QS
+}
 
 
-QChart* histogram(gsl_vector *data , QString title=QString("Histogram"));
-QChart* barChart(gsl_vector *data, QStringList labels, QString title=QString("Bar Chart"), bool legend = false);
-
-
-QSVG
-
-#endif // CHARTOPS_H
+DataNetwork::~DataNetwork() {
+    delete m_graphScene;
+    delete m_graphWidget;
+    delete m_graph;
+}

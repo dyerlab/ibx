@@ -51,6 +51,8 @@ signals:
 
 public slots:
 
+    void slotDoNextAction();
+
     void slotImportGenotypes();
     void slotStackedWidgetChanged(int);
 
@@ -68,11 +70,15 @@ private:
 
   QAction *quitAction;
   QAction *importGeneticDataAction;
+  QAction *importGraphDataAction;
 
   QAction *nextDataAction;
   QAction *prevDataAction;
 
   QAction *alleleFrequencyAction;
+
+
+  QAction *nextActionAction;
 
 
   void makeUI();

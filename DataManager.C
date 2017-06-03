@@ -28,6 +28,7 @@
 #include "FileIO.H"
 #include "Globalz.H"
 #include "DataManager.H"
+#include "DataNetwork.H"
 #include "DataGenotypes.H"
 #include "DialogImportGenotypes.H"
 
@@ -158,10 +159,20 @@ void DataManager::importGenotypes() {
 
 }
 
+void DataManager::importGraph() {
+    DataNetwork *network = new DataNetwork(true);
+    int idx = m_stackedWidget->addWidget( network->getWidget() );
+    network->setStackIndex(idx);
+    m_treeWidget->addTopLevelItem( network->treeWidgetItem() );
+    m_treeWidget->update();
+    m_data.append( network);
+    slotChangeStackedWidget(network->treeWidgetItem(), 0);
+}
 
 
+void DataManager::slotMakeNextThing() {
 
-
+}
 
 
 

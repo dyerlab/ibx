@@ -51,7 +51,8 @@ SOURCES += main.cpp \
     GraphView.C \
     GraphWidget.C \
     Node.C \
-    Charts.C
+    Charts.C \
+    DataNetwork.C
 
 HEADERS  += \
     MainWindow.H \
@@ -82,7 +83,8 @@ HEADERS  += \
     GraphView.H \
     GraphWidget.H \
     Node.H \
-    Charts.H
+    Charts.H \
+    DataNetwork.H
 
 FORMS    += \
     DialogImportGenotypes.ui

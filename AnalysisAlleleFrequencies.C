@@ -97,8 +97,18 @@ bool AnalysisAlleleFrequencies::run() {
             freqs.append(f);
             allAlleles.append( f->alleles() );
         }
+
+        allAlleles = allAlleles.toSet().toList();
+        std::sort( allAlleles.begin(), allAlleles.end());
+
         gsl_matrix* m = frequencyMatrix( freqs );
-        m_results->appendTable(QString("Locus: %1").arg(locus),m,strata,allAlleles);
+
+
+        qDebug() << strata;
+        qDebug() << allAlleles;
+        qDebug() << "rows" << m->size1 << " cols" << m->size2;
+
+        m_results->appendTable(QString("Locus: %1").arg(locus),m,keys,allAlleles);
         gsl_matrix_free( m );
         qDeleteAll(freqs);
     }

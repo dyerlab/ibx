@@ -28,7 +28,7 @@
 #include <QtAlgorithms>
 #include <QDebug>
 #include <QList>
-#include "Charts.H"
+#include "GraphCharts.H"
 
 QChart* histogram( gsl_vector *data , QString title){
     int mn = (int)gsl_vector_min(data);

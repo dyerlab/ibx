@@ -36,7 +36,7 @@ class AnalysisAlleleFrequencies : public AnalysisBase {
 
 public:
     AnalysisAlleleFrequencies( DataGenotypes *theData );
-    ~AnalysisAlleleFrequencies();
+    virtual ~AnalysisAlleleFrequencies();
 
     bool run();
 

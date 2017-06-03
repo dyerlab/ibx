@@ -6,9 +6,9 @@
 *                   \__,_|\__, |\___|_|  |_|\__,_|_.__/
 *                         |___/
 *
-*  chartops
+*  DataNetwork.H
 *
-*  Created: 4 2017 by rodney
+*  Created: 6 2017 by rodney
 *
 *  Copyright 2017 rodney.  All Rights Reserved.
 *
@@ -25,21 +25,31 @@
 *
 ******************************************************************************/
 
-#ifndef CHARTOPS_H
-#define CHARTOPS_H
+#ifndef DATANETWORK_H
+#define DATANETWORK_H
+
+#include <QWidget>
+
+#include "Graph.H"
+#include "DataBase.H"
+#include "GraphScene.H"
+#include "GraphWidget.H"
+
+class DataNetwork : public DataBase {
+public:
+    DataNetwork( bool asLopho = false);
+    ~DataNetwork();
+
+    inline Graph* graph() const { return m_graph; }
+    inline QWidget* getWidget() { return m_graphWidget; }
+
+private:
+    Graph *m_graph;
+    GraphWidget *m_graphWidget;
+    GraphScene *m_graphScene;
 
 
-#include <gsl/gsl_vector.h>
-#include <gsl/gsl_histogram.h>
 
-#include <QtCharts>
-#include <QS
+};
 
-
-QChart* histogram(gsl_vector *data , QString title=QString("Histogram"));
-QChart* barChart(gsl_vector *data, QStringList labels, QString title=QString("Bar Chart"), bool legend = false);
-
-
-QSVG
-
-#endif // CHARTOPS_H
+#endif // DATANETWORK_H

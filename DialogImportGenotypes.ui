@@ -220,6 +220,21 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>headerWidget</tabstop>
+  <tabstop>headers2strata</tabstop>
+  <tabstop>headers2external</tabstop>
+  <tabstop>headers2loci</tabstop>
+  <tabstop>strataWidget</tabstop>
+  <tabstop>strata2headers</tabstop>
+  <tabstop>externalWidget</tabstop>
+  <tabstop>external2headers</tabstop>
+  <tabstop>lociWidget</tabstop>
+  <tabstop>loci2headers</tabstop>
+  <tabstop>radioHaploid</tabstop>
+  <tabstop>radio2Column</tabstop>
+  <tabstop>radioSeparated</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

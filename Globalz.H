@@ -48,7 +48,8 @@ typedef enum {
 typedef enum {
     DATA_TYPE_UNDEFINED,
     DATA_TYPE_GENOTYPES,
-    DATA_TYPE_RESULTS
+    DATA_TYPE_RESULTS,
+    DATA_TYPE_NETWORK
 } DATA_TYPE;
 
 

@@ -93,14 +93,19 @@ void DataResults::appendList( QStringList lines, bool isUnordered ) {
 }
 
 void DataResults::appendTable( QString caption, gsl_matrix *content, QStringList rowHeaders, QStringList colHeaders ){
+    Q_ASSERT( content->size1 == (size_t)rowHeaders.count() );
+    Q_ASSERT( content->size2 == (size_t)colHeaders.count() );
+
     QString doc = m_textEdit->document()->toHtml();
 
-    doc += QString("<table>\n");
+    doc += QString("<table border=1>\n");
+
     if( !caption.isEmpty() )
         doc += QString("<caption>%1</caption>").arg(caption);
+
     if( colHeaders.count()){
         doc += QString("<tr>");
-        if( rowHeaders.count())
+        if( colHeaders.count())
             doc += QString("<th>&nbsp;</th>");
         foreach(QString hdr, colHeaders )
             doc += QString("<th>%1</th>").arg(hdr);
@@ -109,11 +114,15 @@ void DataResults::appendTable( QString caption, gsl_matrix *content, QStringList
 
     for(size_t i=0; i<content->size1;i++){
         doc += QString("<tr>");
-        if( rowHeaders.count())
+        if( i < rowHeaders.count())
             doc += QString("<th>%1</th>").arg(rowHeaders.at(i));
 
         for( size_t j=0;j<content->size2;j++){
-            doc += QString("<td>%1</td>").arg(gsl_matrix_get(content,i,j));
+            double val = gsl_matrix_get(content,i,j);
+            if( val )
+                doc += QString("<td>%1</td>").arg(val, 0, 'g', 4);
+            else
+                doc += QString("<td></td>");
         }
         doc += QString("</tr>");
     }
